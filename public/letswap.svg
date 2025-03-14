@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="100" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Left Arrowhead -->
+    <path d="M100 50 Q80 30 50 30 L20 50 L50 70 Q80 70 100 50" 
+          fill="red" stroke="black" stroke-width="3" stroke-linejoin="round"/>
+    
+    <!-- Right Arrowhead -->
+    <path d="M100 50 Q120 30 150 30 L180 50 L150 70 Q120 70 100 50" 
+          fill="blue" stroke="black" stroke-width="3" stroke-linejoin="round"/>
+</svg>

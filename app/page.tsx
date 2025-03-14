@@ -7,42 +7,44 @@ export default function Home() {
       <main className={styles.main}>
         <Image
           className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
+          style={{ border: '4px solid red' }}
+          src="/letswap.svg"
+          alt="LetSwap logo"
           width={180}
           height={38}
           priority
+
         />
         <ol>
           <li>
-            Get started by editing <code>app/page.tsx</code>.
+            Swap your collectibles with ease !
           </li>
-          <li>Save and see your changes instantly.</li>
+          <li>---</li>
         </ol>
 
         <div className={styles.ctas}>
           <a
             className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+            href="#"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Image
               className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
+              src="/right-point.svg"
+              alt="next logomark"
               width={20}
               height={20}
             />
-            Deploy now
+            Browse Collection Series
           </a>
           <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+            href="#"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.secondary}
           >
-            Read our docs
+            Sign up
           </a>
         </div>
       </main>
