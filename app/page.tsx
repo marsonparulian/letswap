@@ -4,7 +4,15 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
+      <main className={`${styles.main} `}>
+        <Image
+          src="/hero-desktop.webp"
+          width={1100}
+          height={500}
+          className=""
+          alt="Hero cartoon image"
+        />
+
         <Image
           className={styles.logo}
           style={{ border: '4px solid red' }}
@@ -13,14 +21,9 @@ export default function Home() {
           width={160}
           height={160}
           priority
-
         />
-        <ol>
-          <li>
-            Swap your collectibles with ease !
-          </li>
-          <li>---</li>
-        </ol>
+
+        <blockquote>Swap your collectibles with ease !</blockquote>
 
         <div className={styles.ctas}>
           <a

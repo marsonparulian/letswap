@@ -29,6 +29,8 @@
 
 .main {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 32px;
   grid-row-start: 2;
