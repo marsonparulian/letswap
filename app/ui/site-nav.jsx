@@ -1,12 +1,19 @@
+'use client';
+
 import React from 'react';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
+
 import Link from 'next/link';
-import { link } from 'fs';
 
 const SiteNav = () => {
+    // Current path name
+    const pathName = usePathname();
+
+    // Nav links
     const links = [
-        // `include` is an array of pathName that considered to be under the link. Hence it will make the nav link as 'active'
-        { href: '/', label: 'Home', include: [] },
-        { href: '/collections', label: 'Browse', include: ['/collections/generate'] },
+        { href: '/', label: 'Home' },
+        { href: '/collections', label: 'Browse' },
         { href: '/about', label: 'About' },
     ]
     return (
@@ -22,8 +29,26 @@ const SiteNav = () => {
                         </ul>
                     </li> */}
                     {links.map(l => {
+                        // Set if the link is active
+                        let isActive = false;
+                        // Set active for home page
+                        if (pathName.trim() === '/' && l.href === '/') {
+                            isActive = true;
+                        }
+                        // Set active if the current path starts with the link href
+                        else if (l.href !== '/' && pathName.startsWith(l.href)) {
+                            isActive = true;
+                        }
+
                         return (
-                            <li key={l.href}><Link href={l.href}>{l.label}</Link></li>
+                            <li key={l.href}>
+                                <Link href={l.href}
+                                    className={
+                                        // Add 'active' class if the current path starts with the link href & is not the home page
+                                        clsx({ 'active': isActive })
+                                    }
+                                >{l.label}</Link>
+                            </li>
                         )
                     })}
                 </ul>
