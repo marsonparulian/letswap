@@ -10,8 +10,8 @@ export default function Home() {
           style={{ border: '4px solid red' }}
           src="/letswap.svg"
           alt="LetSwap logo"
-          width={180}
-          height={38}
+          width={160}
+          height={160}
           priority
 
         />
