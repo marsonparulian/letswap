@@ -6,7 +6,7 @@ const SiteNav = () => {
     const links = [
         // `include` is an array of pathName that considered to be under the link. Hence it will make the nav link as 'active'
         { href: '/', label: 'Home', include: [] },
-        { href: '/collectibles', label: 'Browse', include:['/collectibles/generate'] },
+        { href: '/collections', label: 'Browse', include: ['/collections/generate'] },
         { href: '/about', label: 'About' },
     ]
     return (
