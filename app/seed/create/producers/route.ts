@@ -14,18 +14,19 @@ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   `;
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 async function seedProducers() {
     await createProducers();
 
     return sql`
-INSERT INTO ${sql(tableName)} (slug, name)
-VALUES ('coles', 'Coles Supermarket'), ('woolworths', 'Woolworths Supermarket')
-`;
+        INSERT INTO ${sql(tableName)} (slug, name)
+        VALUES ('coles', 'Coles Supermarket'), ('woolworths', 'Woolworths Supermarket')
+    `;
 }
 
 export async function GET() {
     try {
-        const result = await sql.begin((sql) => [
+        await sql.begin(() => [
             createProducers(),
             // Uncomment line below to populate the table
             // seedProducers()  

@@ -17,7 +17,7 @@ async function createCollectionItems() {
 
 export async function GET() {
     try {
-        const result = await sql.begin((sql) => [
+        await sql.begin(() => [
             createCollectionItems(),
         ]);
 

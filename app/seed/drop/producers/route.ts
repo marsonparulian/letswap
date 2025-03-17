@@ -8,7 +8,7 @@ async function dropProducers() {
 
 export async function GET() {
     try {
-        const result = await sql.begin((sql) => [
+        await sql.begin(() => [
             dropProducers(),
         ]);
 
