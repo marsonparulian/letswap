@@ -1,4 +1,4 @@
-// Globl 404 page
+// Global 404 page
 
 export default function NotFoundPage() {
     return (
