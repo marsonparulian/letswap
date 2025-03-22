@@ -29,9 +29,9 @@ export default function RootLayout({
         <header>
           <SiteNav />
         </header>
-
-        {children}
-
+        <main>
+          {children}
+        </main>
         {/* Foundation CSS */}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.9.0/dist/css/foundation.min.css" />
 
