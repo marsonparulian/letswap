@@ -72,3 +72,25 @@ div.top-bar a.active {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
 }
+
+div.help-text {
+  /* To stick with the input above */
+  margin: -1rem 0 1rem 0;
+}
+
+div.help-text>.alert {
+  /* When form input invalid, slide down the error message */
+  animation: slide-down 0.5s ease-in-out;
+}
+
+@keyframes slide-down {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
