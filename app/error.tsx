@@ -13,7 +13,7 @@ export default function ErrorPage(
 
     useEffect(() => {
         console.error(error);
-    }, []);
+    });
 
     return (
         <div className="grid-container">

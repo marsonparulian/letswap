@@ -3,8 +3,6 @@
 import { useActionState } from 'react';
 import { Producer } from '@/types';
 import { producerFormState as ProducerFormState } from '@/app/lib/actions/producer-actions';
-import clsx from 'clsx';
-import { Nanum_Brush_Script } from 'next/font/google';
 
 export default function ProducerForm(
     { actionFunc, producer }: {
