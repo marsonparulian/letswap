@@ -1,13 +1,24 @@
 // Form to create / edit producer
+'use client';
+import { useActionState } from 'react';
 import { Producer } from '@/types';
+import { producerFormState as ProducerFormState } from '@/app/lib/actions/producer-actions';
+import clsx from 'clsx';
+import { Nanum_Brush_Script } from 'next/font/google';
 
 export default function ProducerForm(
     { actionFunc, producer }: {
-        actionFunc: (f: FormData) => Promise<void>
+        actionFunc: (state: ProducerFormState, f: FormData) => Promise<ProducerFormState>
         producer?: Producer
     }) {
+
+    const initialSate: ProducerFormState = { errors: {}, message: null }
+    const [formState, formAction] = useActionState(actionFunc, initialSate);
+    console.log('formState: ');
+    console.log(formState);
+
     return (
-        <form action={actionFunc}>
+        <form action={formAction}>
 
             <div className="grid-container">
                 <header>
@@ -26,7 +37,14 @@ export default function ProducerForm(
                                 placeholder="Slug will be used in URL only"
                                 aria-describedby="slug-help-text" />
                         </label>
-                        <p className="help-text" id="slug-help-text">Only accepts alphanumeric, _ (underscore), and .(period)</p>
+                        <div className="help-text" id="slug-help-text" aria-live="polite" aria-atomic="true">
+                            {/* Show message if no form error */}
+                            {!formState.errors?.slug && <p className="label secondary">Only accepts alphanumeric, _ (underscore), and .(period)</p>}
+                            {/* Show error messages */}
+                            {formState.errors?.slug && formState.errors.slug.map((e, k) => {
+                                return <span key={`slug-error-${k}`} className="label alert">{e}</span>
+                            })}
+                        </div>
                     </div>
                 </div>
 
@@ -41,7 +59,15 @@ export default function ProducerForm(
                                 placeholder="The name of the collection producer"
                                 aria-describedby="name-help-text" />
                         </label>
-                        <p className="help-text" id="name-help-text">Only use alphanumeric, space, _ (underscore), and . (period)</p>
+                        <div className="help-text" id="name-help-text" aria-live="polite" aria-atomic="true">
+                            {/* Show message if no form error */}
+                            {!formState.errors?.name && <span className="label secondary" >Only use alphanumeric, space, _ (underscore), and . (period)</span>}
+                            {/* Show error messages */}
+                            {formState.errors?.name && formState.errors.name.map((e, k) => {
+                                return <span key={`name-error-${k}`} className="label alert">{e}</span>
+                            })}
+                        </div>
+
                     </div>
                 </div>
 
@@ -56,9 +82,12 @@ export default function ProducerForm(
                                 placeholder="Description of the producer"
                                 aria-describedby="description-help-text" />
                         </label>
-                        <p className="help-text" id="description-help-text">
-                            Msx 600 characters
-                        </p>
+                        <div className="help-text" id="description-help-text">
+                            {/* Showhint when no error message */}
+                            {!formState.errors?.description && <span className="label secondary">Maximum 4000 characters (FIXME)</span>}
+                            {/* Show error messages */}
+                            {formState.errors?.description && formState.errors.description.map((e, k) => <span key={`description-error-${k}`} className="label alert">{e}</span>)}
+                        </div>
                     </div>
                 </div>
 

@@ -7,6 +7,16 @@ import { tableName, updateProducer, deleteProducer } from '@/app/lib/data/produc
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+// Form state
+export type producerFormState = {
+    errors?: {
+        slug?: string[],
+        name?: string[],
+        description?: string[],
+    },
+    message?: string | null,
+}
+
 type RawFormProducer = {
     id: FormDataEntryValue | null,
     slug: FormDataEntryValue | null,
@@ -16,15 +26,34 @@ type RawFormProducer = {
 
 const ProducerSchema = z.object({
     id: z.string(),
-    slug: z.string(),
-    name: z.string(),
-    description: z.string(),
+    slug: z.string({
+        invalid_type_error: 'Invalid type. Expected string.',
+    }).min(3, 'Slug must be at least 3 characters'),
+    name: z.string({
+        invalid_type_error: 'Invalid type',
+    }).min(3, 'Name must be at least 3 characters'),
+    description: z.string({
+        invalid_type_error: 'Invalid type',
+    }).min(3, 'Description must be at least 3 characters'),
 });
 
-export async function createProducerAction(formData: FormData) {
-    const { slug, name, description } = ProducerSchema.omit({
+export async function createProducerAction(prevState: producerFormState, formData: FormData) {
+    const validatedData = ProducerSchema.omit({
         id: true,
-    }).parse(parseFormData(formData));
+    }).safeParse(parseFormData(formData));
+
+    // Check for invalid
+    if (!validatedData.success) {
+        console.log('Data is invalid');
+        return {
+            errors: validatedData.error.flatten().fieldErrors,
+            message: 'Failed saving producer',
+        }
+    }
+    console.log('Data is valid');
+
+    // Continue with valid data.
+    const { slug, name, description } = validatedData.data;
 
     // Saving new producer
     await sql`
