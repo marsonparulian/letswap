@@ -79,18 +79,19 @@ div.help-text {
 }
 
 div.help-text>.alert {
-  /* When form input invalid, slide down the error message */
-  animation: slide-down 0.5s ease-in-out;
+  /* When form input invalid, slide right the error message */
+  animation: slide-right 0.5s ease-in-out;
+  z-index: 1;
 }
 
-@keyframes slide-down {
+@keyframes slide-right {
   0% {
-    transform: translateY(-100%);
+    transform: translateX(-100%);
     opacity: 0;
   }
 
   100% {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
   }
 }
