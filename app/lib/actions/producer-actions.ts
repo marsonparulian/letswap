@@ -67,17 +67,24 @@ export async function createProducerAction(prevState: producerFormState, formDat
     redirect('/producers');
 }
 
-export async function editProducerAction(id: string, formData: FormData) {
+export async function editProducerAction(id: string, prevState: producerFormState, formData: FormData) {
 
     const rawFormData = parseFormData(formData);
 
     const validatedFormData = ProducerSchema.omit({
         id: true,
-    }).parse(rawFormData);
+    }).safeParse(rawFormData);
+
+    if (!validatedFormData.success) {
+        return {
+            errors: validatedFormData.error.flatten().fieldErrors,
+            message: 'Failed saving producer',
+        }
+    }
 
     await updateProducer({
         id: id,
-        ...validatedFormData
+        ...validatedFormData.data,
     });
 
     // Revalidate and redirect
