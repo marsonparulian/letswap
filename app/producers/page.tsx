@@ -1,6 +1,6 @@
 // Page containing list of producer
 import { getProducers } from '@/app/lib/data/producers';
-import ProducerList from '../ui/producer-list';
+import ProducerList from './producer-list';
 
 export default async function ProducerPage() {
 
