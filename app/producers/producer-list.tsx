@@ -3,9 +3,11 @@ import CardList from '../ui/card-list';
 import { Producer } from '@/types';
 import { deleteProducerAction } from '@/app/lib/actions/producer-actions';
 
-export default function ProducerList(
+export default async function ProducerList(
     { producers }: { producers: Producer[] }
 ) {
+
+    await new Promise(r => setTimeout(r, 4000));
 
     // add required props for the list
     const producerList = producers.map((p) => {
