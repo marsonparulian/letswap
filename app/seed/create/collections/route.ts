@@ -9,7 +9,7 @@ async function createCollections() {
       slug VARCHAR(255) NOT NULL UNIQUE,
       name VARCHAR(255) NOT NULL,
       description TEXT NOT NULL,
-      items_number INT NOT NULL,
+      items_count INT NOT NULL,
       producer_id INT NOT NULL REFERENCES producers(id),
       image_url VARCHAR(255) NOT NULL,
       year INT CHECK (year >= 1000 AND year <= 9999),
