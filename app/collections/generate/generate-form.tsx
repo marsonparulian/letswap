@@ -4,7 +4,8 @@
 export default async function generateCollectionForm() {
 
     // FIXME: const below are for mocking only. Will be replaced later
-    const formAction = async (formData: FormData) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const formAction = async (_formData: FormData) => {
         return;
     }
     const formState = { errors: { slug: [], name: [], description: [] } };
