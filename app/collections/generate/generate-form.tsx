@@ -3,6 +3,13 @@
 
 export default async function generateCollectionForm() {
 
+    // FIXME: const below are for mocking only. Will be replaced later
+    const formAction = async (formData: FormData) => {
+        return;
+    }
+    const formState = { errors: { slug: [], name: [], description: [] } };
+    const producer = { slug: '', name: '', description: '' };
+
     return (
         <form action={formAction}>
 
