@@ -1,5 +1,4 @@
 import { sql } from '@/app/lib/data/utils';
-import { Producer } from '@/types';
 
 // Main data related functions to a specific table
 export const tableName = 'producers';
