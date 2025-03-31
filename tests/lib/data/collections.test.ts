@@ -1,20 +1,24 @@
-import { Linefont } from 'next/font/google';
-import { tableName } from '../../../app/lib/data/collections';
+/**
+ * @jest-environment node
+ */
+// Note: set `testEnvironment` to `node`, because this test DB related functions
+// About: this file test the `Collection` data layer
+import { tableName, deleteCollections } from '@/app/lib/data/collections';
 
 describe('lib/data/collections', () => {
     it('should have the correct table name', () => {
         expect(tableName).toBe('collections');
     });
-    //     describe('Delete collections', () => {
-    //         it('Delete all collections', async () => {
-    //             // await deleteCollections();
-    //             // No need to check the returned value. If error, it will throw
+    describe('Delete collections', () => {
+        it('Should delete all collections', async () => {
+            await deleteCollections();
+            // No need to check the returned value.The delete function should throw any errors.
 
-    //             // Verify no more collections in DB
-    //             const collections = await retrieve();
-    //             expect(collections).toHaveLength(0);
-    //         });
-    //     });
+            // Verify no more collections in DB
+            // const collections = await retrieve();
+            //             expect(collections).toHaveLength(0);
+        });
+    });
     //     describe('Retrieve collections', () => {
     //         // Note: We do not need to test to retrieve all, since it is already tested after deletion and creation tests.
 
