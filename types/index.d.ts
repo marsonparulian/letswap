@@ -12,7 +12,7 @@ declare global {
         name: string,
         desc: string,
         // The order in the collection
-        order_number: number,
+        orderNumber: number,
     }
     export type Collection = {
         id: string,
@@ -20,12 +20,12 @@ declare global {
         name: string,
         desc: string,
         // Number of items
-        items_count: number,
+        itemsCount: number,
         producerId: string,
         imageUrl: string,
         year: number,
         // The date the collection was created
-        created_at: Date,
+        createdAt: Date,
     }
 }
 export { };
