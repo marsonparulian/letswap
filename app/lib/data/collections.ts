@@ -5,3 +5,7 @@ export const tableName = 'collections';
 export async function deleteCollections() {
     return null;
 }
+
+export function generateCollectionItemsByNumber() {
+    
+}
