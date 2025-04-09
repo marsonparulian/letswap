@@ -11,7 +11,7 @@ async function createCollections() {
                 id SERIAL PRIMARY KEY,
                 slug VARCHAR(255) NOT NULL,
                 name VARCHAR(255) NOT NULL,
-                desc TEXT,
+                description TEXT,
                 items_count INT NOT NULL,
                 producer_id INT NOT NULL REFERENCES producers(id),
                 image_url VARCHAR(255),
@@ -23,7 +23,6 @@ async function createCollections() {
 
 export async function GET() {
     try {
-        console.log('start of creating table');
         await sql.begin(() => [
             createCollections(),
         ]);
