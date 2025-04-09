@@ -10,7 +10,7 @@ declare global {
         id: string,
         collectionId: string,
         name: string,
-        desc: string,
+        description: string,
         // The order in the collection
         orderNumber: number,
     }
@@ -18,7 +18,7 @@ declare global {
         id: string,
         slug: string,
         name: string,
-        desc: string,
+        description: string,
         // Number of items
         itemsCount: number,
         producerId: string,
