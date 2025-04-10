@@ -15,6 +15,22 @@ export async function getProducers(): Promise<Producer[]> {
     }
 }
 
+export async function createProducer(producer: Producer): Promise<Producer> {
+
+    try {
+        const [savedProducer] = await sql<Producer[]>`
+            INSERT INTO ${sql(tableName)} (slug, name, description)
+            VALUES (${producer.slug}, ${producer.name}, 
+            ${producer.description});
+            RETURNING *
+        `;
+        return savedProducer;
+    } catch (error) {
+        console.error('Failed to create producer', error);
+        throw new Error('Failed to create producer');
+    }
+}
+
 export async function getProducerBySlug(slug: string): Promise<Producer> {
     try {
         const producers = await sql<Producer[]>`
