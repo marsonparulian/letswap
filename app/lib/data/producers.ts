@@ -21,7 +21,7 @@ export async function createProducer(producer: Producer): Promise<Producer> {
         const [savedProducer] = await sql<Producer[]>`
             INSERT INTO ${sql(tableName)} (slug, name, description)
             VALUES (${producer.slug}, ${producer.name}, 
-            ${producer.description});
+            ${producer.description})
             RETURNING *
         `;
         return savedProducer;
