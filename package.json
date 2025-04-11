@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
+    "test:file": "jest --testPathPattern",
     "test:watch": "jest --watch",
     "test:clearCache": "jest --clearCache",
     "test:detectOpenHandles": "jest --detectOpenHandles"
