@@ -8,29 +8,14 @@ export const closeSqlConnection = async () => {
 };
 
 /**
- * Convert a string from snake_case to camelCase
+ * Convert DB table object to TS object : 
+ * all snake_case attributes to pascalCase type attributes
  */
-const snakeToCamelString = (str: string): string => {
-    return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
-};
-/**
- * Will convert any attributes from snake_case to camelCase
- */
-export const snakeToCamelObject = () => {
-    return (obj: Record<string, any>) => {
-        const newObj: Record<string, any> = {};
-        for (const key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                const camelKey = snakeToCamelString(key);
-                newObj[camelKey] = obj[key];
-            }
-        }
-        return newObj;
-    };
+export function tableToObject<T>(p1: CamelToSnake<T>): T {
+    const result: any = {};
+    for (const key in p1) {
+        const camelKey = key.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
+        result[camelKey] = p1[key];
+    }
+    return result;
 }
-/**
- * Convert all keys in an array of objects from snake_case to camelCase
- */
-export const snakeToCamelArrayObject = (arr: Record<string, any>[]) => {
-    return arr.map(obj => snakeToCamelObject()(obj));
-};

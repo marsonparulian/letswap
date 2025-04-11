@@ -27,5 +27,21 @@ declare global {
         // The date the collection was created
         createdAt: Date,
     }
+
+    // SnakeCase helper type, to convert from camelCase  to snake_case
+    type SnakeCase<S extends string> =
+        S extends `${infer Head}${infer Tail}`
+        ? Tail extends Uncapitalize<Tail>
+        ? `${Lowercase<Head>}${SnakeCase<Tail>}`
+        : `${Lowercase<Head>}_${SnakeCase<Tail>}`
+        : S;
+
+    // Type to convert camelCase based type to snake_case, to represent table in DB
+    export type CamelToSnake<T> = {
+        [K in keyof T as K extends string ? SnakeCase<K> : never]: T[K]
+    };
+
+
+
 }
 export { };
