@@ -24,6 +24,7 @@ declare global {
         producerId: number,
         imageUrl: string,
         year: number,
+        items: CollectionItem[],
         // The date the collection was created
         createdAt: Date,
     }
