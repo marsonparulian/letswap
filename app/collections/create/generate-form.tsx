@@ -13,7 +13,7 @@ export default async function generateCollectionForm() {
 
     return (
         <form action={formAction}>
-
+            <h1>This is the old generate form</h1>
             <div className="grid-container">
                 <header>
                     <h1>Producer <span className="show-for-sr">Form</span></h1>

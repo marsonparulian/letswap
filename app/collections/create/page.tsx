@@ -1,4 +1,4 @@
-export default function GenerateCollectiblePage() {
+export default function GenerateCollectionPage() {
 
     return (
         <form >
