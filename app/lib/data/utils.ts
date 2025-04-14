@@ -12,10 +12,10 @@ export const closeSqlConnection = async () => {
  * all snake_case attributes to pascalCase type attributes
  */
 export function tableToObject<T>(p1: CamelToSnake<T>): T {
-    const result: any = {};
+    const result: Partial<T> = {};
     for (const key in p1) {
         const camelKey = key.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
-        result[camelKey] = p1[key];
+        result[camelKey as keyof T] = p1[key] as unknown as T[keyof T];
     }
-    return result;
+    return result as T;
 }
