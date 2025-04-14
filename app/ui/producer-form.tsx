@@ -1,7 +1,6 @@
 // Form to create / edit producer
 'use client';
 import { useActionState } from 'react';
-import { Producer } from '@/types';
 import { producerFormState as ProducerFormState } from '@/app/lib/actions/producer-actions';
 
 export default function ProducerForm(
