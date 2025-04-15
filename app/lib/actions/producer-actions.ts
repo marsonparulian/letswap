@@ -103,7 +103,7 @@ function parseFormData(formData: FormData): RawFormProducer {
     return producer;
 }
 
-export async function deleteProducerAction(id: string) {
+export async function deleteProducerAction(id: number) {
     await deleteProducer(id);
 
     // Revalidate

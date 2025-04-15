@@ -13,7 +13,7 @@ describe('lib/data/producers', () => {
     describe('Delete producers', () => {
 
         it('Should not throw error when delete by id = 1', async () => {
-            const id = '1';
+            const id = 1;
             const p = deleteProducer(id);
 
             // This test only to make sure no errors are thrown. 

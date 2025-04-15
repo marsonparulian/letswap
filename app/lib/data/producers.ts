@@ -69,7 +69,7 @@ export async function updateProducer(producer: Producer): Promise<boolean> {
     }
 }
 
-export async function deleteProducer(id: string) {
+export async function deleteProducer(id: number) {
     try {
         return sql`
 DELETE FROM ${sql(tableName)}
