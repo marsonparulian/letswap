@@ -67,7 +67,7 @@ export async function createProducerAction(prevState: producerFormState, formDat
     redirect('/producers');
 }
 
-export async function editProducerAction(id: string, prevState: producerFormState, formData: FormData) {
+export async function editProducerAction(id: number, prevState: producerFormState, formData: FormData) {
 
     const rawFormData = parseFormData(formData);
 
