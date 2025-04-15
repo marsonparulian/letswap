@@ -1,6 +1,5 @@
 // Component of list of producer
 import CardList from '../ui/card-list';
-import { Producer } from '@/types';
 import { deleteProducerAction } from '@/app/lib/actions/producer-actions';
 
 export default async function ProducerList(
