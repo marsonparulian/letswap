@@ -83,7 +83,7 @@ export async function editProducerAction(id: string, prevState: producerFormStat
     }
 
     await updateProducer({
-        id: id,
+        id: Number(id),
         ...validatedFormData.data,
     });
 
