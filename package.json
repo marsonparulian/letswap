@@ -11,6 +11,8 @@
     "test:file": "jest --testPathPattern",
     "test:watch": "jest --watch",
     "test:e2e": "jest ./tests-e2e/",
+    "test:e2e:watch": "jest ./tests-e2e/ --watch",
+    "test:e2e:debug": "jest ./tests-e2e/ --watch --detectOpenHandles",
     "test:clearCache": "jest --clearCache",
     "test:detectOpenHandles": "jest --detectOpenHandles"
   },
