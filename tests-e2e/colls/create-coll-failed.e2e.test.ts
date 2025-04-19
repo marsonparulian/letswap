@@ -12,19 +12,33 @@ describe("Invalid collection form", () => {
   let browser: Browser;
   // Reff to `Page` object that will be created in every `describe`
   let page: Page;
+  // URL of the form to create new collection
+  const formUrl = "http://localhost:3000/collections/create";
 
   beforeAll(async () => {
     // Launch browser
     const userDataDir = "/home/mpa/projects/letswap/tests-e2e/user-data";
-    browser = await puppeteer.launch({ headless: true, userDataDir });
+    browser = await puppeteer.launch({ headless: false, userDataDir });
   });
-  describe("Submit empty form", () => {
+  describe("Submit defaut form", () => {
     beforeAll(async () => {
       // New page
       page = await browser.newPage();
-      // Navigate to the form
-      // Wait for navigation to finish
     });
+    it("Status 200 & form element is parsed", async () => {
+      // Navigate to the form & wait
+      const response = await page.goto(formUrl);
+
+      expect(response?.status()).toBe(200);
+      expect(response?.url()).toContain("/collections/create");
+
+      // Assert there is only 1 form element
+      const formCount: number = await page.$$eval(
+        "form#coll-form",
+        (elements: HTMLElement[]) => elements.length
+      );
+      expect(formCount).toBe(1);
+    }, 82e6);
     it.todo("Verifiy the form elements");
     it.todo("Verify no error messages");
     it.todo("Submit all empty form");
@@ -40,7 +54,6 @@ describe("Invalid collection form", () => {
   });
   describe("Submit invalid slug", () => {
     beforeAll(async () => {
-      console.log("Invalid slug");
       // Open new page & navigate to the form
     });
 
@@ -78,5 +91,8 @@ describe("Invalid collection form", () => {
     it.todo("No error msg & empty producer dropdown box");
     it.todo("Got error msg after not select any provider");
     it.todo("Error message gone after resubmit with selected provider");
+  });
+  afterAll(async () => {
+    await browser.close();
   });
 });
