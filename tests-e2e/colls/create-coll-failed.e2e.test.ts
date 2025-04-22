@@ -4,6 +4,7 @@
 // Note: directive above is needed to override the global `jsdom`, since this file tests server functions (DB related)
 
 import puppeteer, { Browser, Page } from "puppeteer";
+import * as utils from "@/tests-e2e/utils";
 
 // Scenario: Invalid result when creating `collection`
 
@@ -13,12 +14,12 @@ describe("Invalid collection form", () => {
   // Reff to `Page` object that will be created in every `describe`
   let page: Page;
   // URL of the form to create new collection
-  const formUrl = "http://localhost:3000/collections/create";
+  const formUrl = `${utils.BASE_URL}/collections/create`;
 
   beforeAll(async () => {
     // Launch browser
     const userDataDir = "/home/mpa/projects/letswap/tests-e2e/user-data";
-    browser = await puppeteer.launch({ headless: false, userDataDir });
+    browser = await puppeteer.launch(utils.BROWSER_OPTIONS);
   });
   describe("Submit defaut form", () => {
     beforeAll(async () => {
@@ -37,8 +38,9 @@ describe("Invalid collection form", () => {
         "form#coll-form",
         (elements: HTMLElement[]) => elements.length
       );
+      await new Promise((r) => setTimeout(r, 34000));
       expect(formCount).toBe(1);
-    }, 82e6);
+    });
     it.todo("Verifiy the form elements");
     it.todo("Verify no error messages");
     it.todo("Submit all empty form");
