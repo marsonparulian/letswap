@@ -1,6 +1,10 @@
 // This file contains constants and functions used in the e2e tests.
 export const BASE_URL = "http://localhost:3000";
+// URL for testing
+export const URL_COLL_CREATE = `${BASE_URL}/coll/create`;
+// Browser's user data directory
 export const USER_DATA_DIR = "/home/mpa/projects/letswap/tests-e2e/user-data";
+// Browser's options
 export const BROWSER_OPTIONS = {
   headless: false,
   userDataDir: USER_DATA_DIR,
