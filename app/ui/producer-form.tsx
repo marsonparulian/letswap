@@ -5,14 +5,12 @@ import { producerFormState as ProducerFormState } from "@/app/lib/actions/produc
 
 export default function ProducerForm({
   actionFunc,
-  producers,
   producer,
 }: {
   actionFunc: (
     state: ProducerFormState,
     f: FormData
   ) => Promise<ProducerFormState>;
-  producers: Producer[];
   producer?: Producer;
 }) {
   const initialSate: ProducerFormState = { errors: {}, message: null };
