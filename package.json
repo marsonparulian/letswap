@@ -10,7 +10,7 @@
     "test": "jest  --watch --bail --testPathPattern",
     "test:watch": "jest --watch ./tests/",
     "test:watch:bail": "jest --watch --bail ./tests/",
-    "test:e2e": "node tests-e2e/check-localhost.js && jest ./tests-e2e/",
+    "test:e2e": "node tests-e2e/check-localhost.js && jest --config ./jest-e2e.config.ts --watch --runInBand --testPathPattern",
     "test:e2e:watch": "node tests-e2e/check-localhost.js && jest ./tests-e2e/ --watch",
     "test:e2e:watch:bail": "node tests-e2e/check-localhost.js && jest ./tests-e2e/ --watch --bail",
     "test:e2e:debug": "node tests-e2e/check-localhost.js && jest ./tests-e2e/ --watch --detectOpenHandles",

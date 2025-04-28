@@ -1,4 +1,16 @@
 // This file contains constants and functions used in the e2e tests.
+
+import puppeteer, { Browser } from "puppeteer";
+
+export const launchBrowser = async (): Promise<Browser> => {
+  const browser = await puppeteer.launch(BROWSER_OPTIONS);
+
+  if (!browser) {
+    throw new Error("Failed launching browser.");
+  }
+  return browser;
+};
+
 export const BASE_URL = "http://localhost:3000";
 // URL for testing
 export const URL_COLL_CREATE = `${BASE_URL}/coll/create`;
