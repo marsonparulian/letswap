@@ -12,14 +12,21 @@ describe("Test the default of coll form", () => {
   let page: Page;
   beforeAll(async () => {
     browser = await utils.launchBrowser();
-    // page = await browser.newPage();
+    page = await browser.newPage();
+    await page.goto(utils.URL_COLL_CREATE);
   });
 
   afterAll(async () => {
     browser.close();
   });
 
-  it.todo("Form #coll-form exist");
+  it("Form #coll-form exist", async () => {
+    await new Promise((r) => setTimeout(r, 22e3));
+
+    await page.waitForSelector("#coll-form");
+    const form = await page.$("#coll-form");
+    expect(form).not.toBeNull();
+  });
   it.todo('Form has h1 "Collection Form"');
   it.todo("Component to select producers");
   it.todo("None of the producers is selected");
