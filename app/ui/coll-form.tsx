@@ -1,7 +1,7 @@
 // Form to generate new collections
 "use client";
 
-export default async function generateCollectionForm({
+export default function generateCollectionForm({
   producers,
   coll,
 }: {
