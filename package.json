@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest  --watch --bail --testPathPattern",
+    "test": "clear && jest --config jest.config.ts --watch --testPathPattern",
     "test:watch": "jest --watch ./tests/",
     "test:watch:bail": "jest --watch --bail ./tests/",
     "test:e2e": "clear && node tests-e2e/check-localhost.js && jest --config ./jest-e2e.config.ts --runInBand --testPathPattern",

@@ -18,6 +18,7 @@ const config: Config = {
   },
   // Increase default timeout, in case need to manually wait for some async operations
   testTimeout: 48000,
+  bail: true,
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
