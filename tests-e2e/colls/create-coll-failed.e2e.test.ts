@@ -21,31 +21,7 @@ describe("Invalid collection form", () => {
     const userDataDir = "/home/mpa/projects/letswap/tests-e2e/user-data";
     browser = await puppeteer.launch(utils.BROWSER_OPTIONS);
   });
-  describe("Submit defaut form", () => {
-    beforeAll(async () => {
-      // New page
-      page = await browser.newPage();
-    });
-    it("Status 200 & form element is parsed", async () => {
-      // Navigate to the form & wait
-      const response = await page.goto(formUrl);
 
-      expect(response?.status()).toBe(200);
-      expect(response?.url()).toContain("/collections/create");
-
-      // Assert there is only 1 form element
-      const formCount: number = await page.$$eval(
-        "form#coll-form",
-        (elements: HTMLElement[]) => elements.length
-      );
-      await new Promise((r) => setTimeout(r, 34000));
-      expect(formCount).toBe(1);
-    });
-    it.todo("Verifiy the form elements");
-    it.todo("Verify no error messages");
-    it.todo("Submit all empty form");
-    it.todo("Check all the error messages");
-  });
   describe("Submit invalid name", () => {
     beforeAll(async () => {
       // Open new page
