@@ -19,3 +19,11 @@ export function fieldMaxLength(field: string, max: number): string {
 export function fieldLength(field: string, min: number, max: number): string {
   return `${field} must be between ${min} and ${max} characters`;
 }
+// Message when number of field does not meet the minium value
+export function fieldMinValue(field: string, min: number): string {
+  return `${field} must be at least ${min}`;
+}
+// Message when number of field does not meet the maximum value
+export function fieldMaxValue(field: string, max: number): string {
+  return `${field} must be at most ${max}`;
+}
