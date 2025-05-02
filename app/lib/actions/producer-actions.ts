@@ -1,111 +1,127 @@
 // Contain actions related to `producer`
-'use server';
+"use server";
 
-import z from 'zod';
-import { sql } from '@/app/lib/data/utils';
-import { tableName, updateProducer, deleteProducer } from '@/app/lib/data/producers'
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+import z from "zod";
+import { sql } from "@/app/lib/data/utils";
+import {
+  tableName,
+  updateProducer,
+  deleteProducer,
+} from "@/app/lib/data/producers";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 // Form state
 export type producerFormState = {
-    errors?: {
-        slug?: string[],
-        name?: string[],
-        description?: string[],
-    },
-    message?: string | null,
-}
+  errors?: {
+    slug?: string[];
+    name?: string[];
+    description?: string[];
+  };
+  message?: string | null;
+};
 
 type RawFormProducer = {
-    id: FormDataEntryValue | null,
-    slug: FormDataEntryValue | null,
-    name: FormDataEntryValue | null,
-    description: FormDataEntryValue | null,
-}
+  id: FormDataEntryValue | null;
+  slug: FormDataEntryValue | null;
+  name: FormDataEntryValue | null;
+  description: FormDataEntryValue | null;
+};
 
 const ProducerSchema = z.object({
-    id: z.string(),
-    slug: z.string({
-        invalid_type_error: 'Invalid type. Expected string.',
-    }).min(3, 'Slug must be at least 3 characters'),
-    name: z.string({
-        invalid_type_error: 'Invalid type',
-    }).min(3, 'Name must be at least 3 characters'),
-    description: z.string({
-        invalid_type_error: 'Invalid type',
-    }).min(3, 'Description must be at least 3 characters'),
+  id: z.string(),
+  slug: z
+    .string({
+      invalid_type_error: "Invalid type. Expected string.",
+    })
+    .nonempty()
+    .min(3, "Slug must be at least 3 characters"),
+  name: z
+    .string({
+      invalid_type_error: "Invalid type",
+    })
+    .min(3, "Name must be at least 3 characters"),
+  description: z
+    .string({
+      invalid_type_error: "Invalid type",
+    })
+    .min(3, "Description must be at least 3 characters"),
 });
 
-export async function createProducerAction(prevState: producerFormState, formData: FormData) {
-    const validatedData = ProducerSchema.omit({
-        id: true,
-    }).safeParse(parseFormData(formData));
+export async function createProducerAction(
+  prevState: producerFormState,
+  formData: FormData
+) {
+  const validatedData = ProducerSchema.omit({
+    id: true,
+  }).safeParse(parseFormData(formData));
 
-    // Check for invalid
-    if (!validatedData.success) {
-        console.log('Data is invalid');
-        return {
-            errors: validatedData.error.flatten().fieldErrors,
-            message: 'Failed saving producer',
-        }
-    }
-    console.log('Data is valid');
+  // Check for invalid
+  if (!validatedData.success) {
+    console.log("Data is invalid");
+    return {
+      errors: validatedData.error.flatten().fieldErrors,
+      message: "Failed saving producer",
+    };
+  }
+  console.log("Data is valid");
 
-    // Continue with valid data.
-    const { slug, name, description } = validatedData.data;
+  // Continue with valid data.
+  const { slug, name, description } = validatedData.data;
 
-    // Saving new producer
-    await sql`
+  // Saving new producer
+  await sql`
         INSERT INTO ${sql(tableName)} (slug, name, description)
         VALUES (${slug}, ${name}, ${description})
         RETURNING *
     `;
 
-    // Revalidate path & redirect
-    revalidatePath('/producers/');
-    redirect('/producers');
+  // Revalidate path & redirect
+  revalidatePath("/producers/");
+  redirect("/producers");
 }
 
-export async function editProducerAction(id: number, prevState: producerFormState, formData: FormData) {
+export async function editProducerAction(
+  id: number,
+  prevState: producerFormState,
+  formData: FormData
+) {
+  const rawFormData = parseFormData(formData);
 
-    const rawFormData = parseFormData(formData);
+  const validatedFormData = ProducerSchema.omit({
+    id: true,
+  }).safeParse(rawFormData);
 
-    const validatedFormData = ProducerSchema.omit({
-        id: true,
-    }).safeParse(rawFormData);
+  if (!validatedFormData.success) {
+    return {
+      errors: validatedFormData.error.flatten().fieldErrors,
+      message: "Failed saving producer",
+    };
+  }
 
-    if (!validatedFormData.success) {
-        return {
-            errors: validatedFormData.error.flatten().fieldErrors,
-            message: 'Failed saving producer',
-        }
-    }
+  await updateProducer({
+    id: Number(id),
+    ...validatedFormData.data,
+  });
 
-    await updateProducer({
-        id: Number(id),
-        ...validatedFormData.data,
-    });
-
-    // Revalidate and redirect
-    revalidatePath('/producers/');
-    redirect('/producers');
-
+  // Revalidate and redirect
+  revalidatePath("/producers/");
+  redirect("/producers");
 }
 function parseFormData(formData: FormData): RawFormProducer {
-    const producer = {
-        id: formData.get('id'),
-        slug: formData.get('slug'),
-        name: formData.get('name'),
-        description: formData.get('description'),
-    };
+  const producer = {
+    id: formData.get("id"),
+    slug: formData.get("slug"),
+    name: formData.get("name"),
+    description: formData.get("description"),
+  };
 
-    return producer;
+  return producer;
 }
 
 export async function deleteProducerAction(id: number) {
-    await deleteProducer(id);
+  await deleteProducer(id);
 
-    // Revalidate
-    revalidatePath('/producers/');
+  // Revalidate
+  revalidatePath("/producers/");
 }
