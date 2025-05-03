@@ -26,7 +26,9 @@ export type CollFormState = {
 };
 
 // Parse `FormData` to acquire `RawCollFormData`
-export function parseFormData(formData: FormData): RawCollFormData {
+export async function parseFormData(
+  formData: FormData
+): Promise<RawCollFormData> {
   const rawCollFormData = {
     id: formData.get("id"),
     slug: formData.get("slug"),
@@ -80,7 +82,7 @@ export async function createCollectionAction(
 ): Promise<CollFormState> {
   const validatedData = CollSchema.omit({
     id: true,
-  }).safeParse(parseFormData(formData));
+  }).safeParse(await parseFormData(formData));
 
   // Check for invalid
   if (!validatedData.success) {
