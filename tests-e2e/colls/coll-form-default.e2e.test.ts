@@ -107,6 +107,10 @@ describe("Test the default of coll form", () => {
     );
     expect(descriptionValue).toBe("");
   });
+  it("There is 1 #producer-id-help-text element", async () => {
+    const helpTextElements = await page.$$("#producer-id-help-text");
+    expect(helpTextElements.length).toBe(1);
+  });
   it("#producer-id-help-text is empty", async () => {
     const helpText = await page.$eval("#producer-id-help-text", (el) =>
       el.textContent?.trim()
