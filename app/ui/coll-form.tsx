@@ -1,7 +1,6 @@
 // Form to generate new collections
 "use client";
 
-import { useFormState } from "react-dom";
 import type { CollFormState } from "../lib/actions/collection-actions";
 import { useActionState } from "react";
 
@@ -17,9 +16,6 @@ export default function CollectionForm({
     formData: FormData
   ) => Promise<CollFormState>;
 }) {
-  // FIXME: const below are for mocking only. Will be replaced later
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-
   const defaultState: CollFormState = {
     errors: {},
     message: "",
