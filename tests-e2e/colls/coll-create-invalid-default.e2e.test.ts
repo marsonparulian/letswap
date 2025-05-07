@@ -1,5 +1,6 @@
 /**
  * Scenario : Invalid result after submit default form when creating `collection`
+ * In general e2e tests will only cover whether the invalid messages are shown or not. E2e tests will not cover various kind of entries, as it will be tested in the 'action' components test (not e2e) for tests performance sake.
  *
  */
 import { Browser, Page } from "puppeteer";
@@ -20,8 +21,22 @@ describe("Submit default form when creating `collection`", () => {
     page = await browser.newPage();
     // Open form
     await page.goto(formUrl);
-    // Press submit button
+
+    // Check if the submit button exists
+    const submitButtonExists = (await page.$("button[type='submit']")) !== null;
+    expect(submitButtonExists).toBe(true);
+
+    // Remove dev panels
+    await utils.removeAllDevelopmentElements(page);
+
+    // Investigate: When load `/collections/create` page the first time, problem in the browser's console. Looks like JQuery is not loaded yet, and the Foundation JS is trying to use it
+    // But if we load other page like `/` or /`collections` (no problem), and then load `/collections/create` page, the problem is gone.
+
+    // Click the submit button
     await page.click("button[type='submit']");
+
+    // Wait for the error message animation to be finished
+    await utils.waitForSomeMiliseconds(1e3);
   });
   afterAll(async () => {
     // Close browser
@@ -41,7 +56,7 @@ describe("Submit default form when creating `collection`", () => {
     expect(navigationEntries.length).toBe(1);
     expect(navigationEntries[0].type).not.toBe("reload");
   });
-  it("[name='producerId'] is empty & no error message", async () => {
+  it("[name='producerId'] is empty", async () => {
     // Check if the producerId input is empty
     const producerIdValue = await page.$eval(
       "[name='producerId']",
@@ -51,11 +66,11 @@ describe("Submit default form when creating `collection`", () => {
   });
   it("Error message for empty producer", async () => {
     // The expected error message
-    const expected = texts.fieldIsRequired(texts.fieldIsRequired("producer"));
+    const expected = texts.fieldIsRequired("Producer");
 
-    // Get array of "#producer-id-help-text label" elements
+    // Get array of "#producer-id-help-text span" elements
     const errorMessages = await page.$$eval(
-      "producer-id-help-text label",
+      "#producer-id-help-text span",
       (spans) => spans.map((span) => span.textContent)
     );
 

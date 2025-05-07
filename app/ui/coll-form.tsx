@@ -1,21 +1,31 @@
 // Form to generate new collections
 "use client";
 
-export default function generateCollectionForm({
+import { useFormState } from "react-dom";
+import type { CollFormState } from "../lib/actions/collection-actions";
+import { useActionState } from "react";
+
+export default function CollectionForm({
   producers,
   coll,
+  actionFunc,
 }: {
   producers: Producer[];
   coll?: Collection;
+  actionFunc: (
+    prevState: CollFormState,
+    formData: FormData
+  ) => Promise<CollFormState>;
 }) {
   // FIXME: const below are for mocking only. Will be replaced later
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const formAction = async (_formData: FormData) => {
-    return;
+
+  const defaultState: CollFormState = {
+    errors: {},
+    message: "",
   };
-  const formState = {
-    errors: { producerId: [], slug: [], name: [], description: [] },
-  };
+
+  const [formState, formAction] = useActionState(actionFunc, defaultState);
 
   return (
     <form action={formAction} id="coll-form">
@@ -30,7 +40,7 @@ export default function generateCollectionForm({
         <div className="grid-x grid-padding-x">
           <div className="medium-6 cell">
             <label>
-              Producer ID
+              Producer
               <select
                 name="producerId"
                 defaultValue={coll?.producerId || ""}
@@ -57,7 +67,8 @@ export default function generateCollectionForm({
               {/* Show message if no form error */}
               {!formState.errors?.producerId && (
                 <span className="label secondary">
-                  Please select a valid producer
+                  {/* No need to put help text here */}
+                  select producer, sir
                 </span>
               )}
               {/* Show error messages */}
