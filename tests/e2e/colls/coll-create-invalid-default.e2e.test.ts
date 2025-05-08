@@ -4,7 +4,7 @@
  *
  */
 import { Browser, Page } from "puppeteer";
-import * as utils from "@/tests-e2e/utils";
+import * as utils from "@/tests/e2e/utils";
 import * as texts from "@/app/lib/texts/texts";
 
 describe("Submit default form when creating `collection`", () => {

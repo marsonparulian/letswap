@@ -4,7 +4,7 @@
 // Note: directive above is needed to override the global `jsdom`, since this file tests server functions (DB related)
 
 import puppeteer, { Browser, Page } from "puppeteer";
-import * as utils from "@/tests-e2e/utils";
+import * as utils from "@/tests/e2e/utils";
 
 // Scenario: Invalid result when creating `collection`
 

@@ -41,4 +41,4 @@ yarn-error.log*
 next-env.d.ts
 
 # User data for e2e tests
-/tests-e2e/user-data
+/tests/e2e/user-data

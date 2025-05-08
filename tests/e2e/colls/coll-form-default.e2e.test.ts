@@ -4,7 +4,7 @@
 // Note: directive above is needed to override the global `jsdom`, since this file tests server functions (DB related)
 
 import { Browser, Page } from "puppeteer";
-import * as utils from "@/tests-e2e/utils";
+import * as utils from "@/tests/e2e/utils";
 import * as producersData from "@/app/lib/data/producers";
 import { closeSqlConnection } from "@/app/lib/data/utils";
 
