@@ -185,6 +185,79 @@ export default function CollectionForm({
           </div>
         </div>
 
+        {/* itemsCount */}
+        <div className="grid-x grid-padding-x">
+          <div className="medium-6 cell">
+            <label>
+              Number of Items
+              <input
+                name="itemsCount"
+                defaultValue={coll?.itemsCount}
+                type="number"
+                min="1"
+                placeholder="Total number of items in collection"
+                aria-describedby="count-items-help-text"
+              />
+            </label>
+            <div
+              className="help-text"
+              id="items-count-help-text"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {/* Show message if no form error */}
+              {!formState.errors?.itemsCount && (
+                <span className="label secondary">Must be at least 1</span>
+              )}
+              {/* Show error messages */}
+              {formState.errors?.itemsCount &&
+                formState.errors.itemsCount.map((e, k) => (
+                  <span key={`items-count-error-${k}`} className="label alert">
+                    {e}
+                  </span>
+                ))}
+            </div>
+          </div>
+        </div>
+
+        {/* year */}
+        <div className="grid-x grid-padding-x">
+          <div className="medium-6 cell">
+            <label>
+              Year
+              <input
+                name="year"
+                defaultValue={coll?.year}
+                type="number"
+                min="1900"
+                max="2100"
+                placeholder="Year the collection was released"
+                aria-describedby="year-help-text"
+              />
+            </label>
+            <div
+              className="help-text"
+              id="year-help-text"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {/* Show message if no form error */}
+              {!formState.errors?.year && (
+                <span className="label secondary">
+                  Enter a valid year between 1900-2100
+                </span>
+              )}
+              {/* Show error messages */}
+              {formState.errors?.year &&
+                formState.errors.year.map((e, k) => (
+                  <span key={`year-error-${k}`} className="label alert">
+                    {e}
+                  </span>
+                ))}
+            </div>
+          </div>
+        </div>
+
         {/* Buttons */}
         <div>
           <button className="button" type="submit">

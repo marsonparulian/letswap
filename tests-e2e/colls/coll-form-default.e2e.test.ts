@@ -95,6 +95,32 @@ describe("Test the default of coll form", () => {
     );
     expect(nameValue).toBe("");
   });
+  it("[name='itemsCount'] is exists", async () => {
+    const numberItemsInput = await page.$("input[name='itemsCount']");
+    expect(numberItemsInput).not.toBeNull();
+  });
+
+  it("itemsCount input is empty", async () => {
+    const numberItemsValue = await page.$eval(
+      "input[name='itemsCount']",
+      (input) => (input as HTMLInputElement).value
+    );
+    expect(numberItemsValue).toBe("");
+  });
+
+  it("[name='year'] input exists", async () => {
+    const yearInput = await page.$("input[name='year']");
+    expect(yearInput).not.toBeNull();
+  });
+
+  it("year input is empty", async () => {
+    const yearValue = await page.$eval(
+      "input[name='year']",
+      (input) => (input as HTMLInputElement).value
+    );
+    expect(yearValue).toBe("");
+  });
+
   it("Description textarea input exists", async () => {
     const descriptionTextarea = await page.$("textarea[name='description']");
     expect(descriptionTextarea).not.toBeNull();
@@ -111,32 +137,44 @@ describe("Test the default of coll form", () => {
     const helpTextElements = await page.$$("#producer-id-help-text");
     expect(helpTextElements.length).toBe(1);
   });
-  it("#producer-id-help-text is empty", async () => {
+  it("#producer-id-help-text is not empty", async () => {
     const helpText = await page.$eval("#producer-id-help-text", (el) =>
       el.textContent?.trim()
     );
-    expect(helpText).toBe("");
+    expect(helpText).not.toBe("");
   });
 
-  it("#slug-help-text is empty", async () => {
+  it("#slug-help-text is not empty", async () => {
     const helpText = await page.$eval("#slug-help-text", (el) =>
       el.textContent?.trim()
     );
-    expect(helpText).toBe("");
+    expect(helpText).not.toBe("");
   });
 
-  it("#name-help-text is empty", async () => {
+  it("#name-help-text is not empty", async () => {
     const helpText = await page.$eval("#name-help-text", (el) =>
       el.textContent?.trim()
     );
-    expect(helpText).toBe("");
+    expect(helpText).not.toBe("");
+  });
+  it("#items-count-help-text is not empty", async () => {
+    const helpText = await page.$eval("#items-count-help-text", (el) =>
+      el.textContent?.trim()
+    );
+    expect(helpText).not.toBe("");
+  });
+  it("#year-help-text has the correct hint", async () => {
+    const helpText = await page.$eval("#year-help-text", (el) =>
+      el.textContent?.trim()
+    );
+    expect(helpText).not.toBe("");
   });
 
-  it("#description-help-text is empty", async () => {
+  it("#description-help-text has the correct hint", async () => {
     const helpText = await page.$eval("#description-help-text", (el) =>
       el.textContent?.trim()
     );
-    expect(helpText).toBe("");
+    expect(helpText).not.toBe("");
   });
   it("Submit button exists", async () => {
     const submitButton = await page.$("button[type='submit']");
