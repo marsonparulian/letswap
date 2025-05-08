@@ -77,10 +77,65 @@ describe("Submit default form when creating `collection`", () => {
     // Expect the error message to be present
     expect(errorMessages).toContain(expected);
   });
-  it.todo("[name='slug'] is empty");
-  it.todo("Error message for empty slug");
-  it.todo("[name='name'] is empty");
-  it.todo("Error message for empty name");
-  it.todo("[name='description'] is empty");
-  it.todo("Error message for empty description");
+  it("[name='slug'] is empty", async () => {
+    // Check if the slug input is empty
+    const slugValue = await page.$eval(
+      "[name='slug']",
+      (el) => (el as HTMLInputElement).value
+    );
+    expect(slugValue).toBe("");
+  });
+  it("Error message for empty slug", async () => {
+    // The expected error message
+    const expected = texts.fieldIsRequired("Slug");
+
+    // Get array of "#slug-help-text span" elements
+    const errorMessages = await page.$$eval("#slug-help-text span", (spans) =>
+      spans.map((span) => span.textContent)
+    );
+
+    // Expect the error message to be present
+    expect(errorMessages).toContain(expected);
+  });
+  it("[name='name'] is empty", async () => {
+    // Check if the name input is empty
+    const nameValue = await page.$eval(
+      "[name='name']",
+      (el) => (el as HTMLInputElement).value
+    );
+    expect(nameValue).toBe("");
+  });
+  it("Error message for empty name", async () => {
+    // The expected error message
+    const expected = texts.fieldIsRequired("Name");
+
+    // Get array of "#name-help-text span" elements
+    const errorMessages = await page.$$eval("#name-help-text span", (spans) =>
+      spans.map((span) => span.textContent)
+    );
+
+    // Expect the error message to be present
+    expect(errorMessages).toContain(expected);
+  });
+  it("[name='description'] is empty", async () => {
+    // Check if the description input is empty
+    const descriptionValue = await page.$eval(
+      "[name='description']",
+      (el) => (el as HTMLInputElement).value
+    );
+    expect(descriptionValue).toBe("");
+  });
+  it("Error message for empty description", async () => {
+    // The expected error message
+    const expected = texts.fieldIsRequired("Description");
+
+    // Get array of "#description-help-text span" elements
+    const errorMessages = await page.$$eval(
+      "#description-help-text span",
+      (spans) => spans.map((span) => span.textContent)
+    );
+
+    // Expect the error message to be present
+    expect(errorMessages).toContain(expected);
+  });
 });
