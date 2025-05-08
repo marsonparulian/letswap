@@ -117,17 +117,59 @@ describe("Submit default form when creating `collection`", () => {
     // Expect the error message to be present
     expect(errorMessages).toContain(expected);
   });
+
+  it("[name='itemsCount'] is empty", async () => {
+    // Check if the itemsCount input is empty
+    const itemsCountValue = await page.$eval(
+      "[name='itemsCount']",
+      (el) => (el as HTMLInputElement).value
+    );
+    expect(itemsCountValue).toBe("");
+  });
+  it("Error message for empty itemsCount", async () => {
+    // The expected error message
+    const expected = texts.fieldMinValue("Items", 2);
+
+    // Get array of "#items-count-help-text span" elements
+    const errorMessages = await page.$$eval(
+      "#items-count-help-text span",
+      (spans) => spans.map((span) => span.textContent)
+    );
+
+    // Expect the error message to be present
+    expect(errorMessages).toContain(expected);
+  });
+  it("[name='year'] is empty", async () => {
+    // Check if the year input is empty
+    const yearValue = await page.$eval(
+      "[name='year']",
+      (el) => (el as HTMLInputElement).value
+    );
+    expect(yearValue).toBe("");
+  });
+  it("Error message for empty year", async () => {
+    // The expected error message
+    const expected = texts.fieldMinValue("Year", 2010);
+
+    // Get array of "#year-help-text span" elements
+    const errorMessages = await page.$$eval("#year-help-text span", (spans) =>
+      spans.map((span) => span.textContent)
+    );
+
+    // Expect the error message to be present
+    expect(errorMessages).toContain(expected);
+  });
   it("[name='description'] is empty", async () => {
     // Check if the description input is empty
     const descriptionValue = await page.$eval(
-      "[name='description']",
-      (el) => (el as HTMLInputElement).value
+      "textarea[name='description']",
+      (el) => (el as HTMLTextAreaElement).value
     );
     expect(descriptionValue).toBe("");
   });
   it("Error message for empty description", async () => {
     // The expected error message
-    const expected = texts.fieldIsRequired("Description");
+    const expected = texts.fieldMinLength("Description", 3);
 
     // Get array of "#description-help-text span" elements
     const errorMessages = await page.$$eval(

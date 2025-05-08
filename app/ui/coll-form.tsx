@@ -170,9 +170,7 @@ export default function CollectionForm({
             <div className="help-text" id="description-help-text">
               {/* Showhint when no error message */}
               {!formState.errors?.description && (
-                <span className="label secondary">
-                  Maximum 4000 characters (FIXME)
-                </span>
+                <span className="label secondary">Maximum 5000 characters</span>
               )}
               {/* Show error messages */}
               {formState.errors?.description &&

@@ -56,6 +56,7 @@ const CollSchema = z.object({
     .string({
       invalid_type_error: texts.fieldIsRequired("Name"),
     })
+    .nonempty(texts.fieldIsRequired("Name"))
     .min(3, texts.fieldMinLength("Name", 3))
     .max(500, texts.fieldMaxLength("Name", 500)),
   description: z
@@ -66,11 +67,11 @@ const CollSchema = z.object({
     .max(5000, texts.fieldMaxLength("Description", 5000)),
   itemsCount: z.coerce
     .number()
-    .min(2, texts.fieldMinLength("Items", 2))
-    .max(10000, texts.fieldMaxLength("Items", 10000)),
+    .min(2, texts.fieldMinValue("Items", 2))
+    .max(300, texts.fieldMaxValue("Items", 300)),
   year: z.coerce
     .number()
-    .min(2000, texts.fieldMinValue("Year", 2010))
+    .min(2010, texts.fieldMinValue("Year", 2010))
     .max(2100, texts.fieldMaxValue("Year", 2100)),
   imageUrl: z.string().nullable().optional(),
 });
