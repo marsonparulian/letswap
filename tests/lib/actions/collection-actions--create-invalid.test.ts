@@ -69,7 +69,7 @@ describe("createCollectionAction --create-invalid", () => {
     it("Error message for empty itemsCount", () => {
       expect(formState.errors.itemsCount).toBeDefined();
       expect(formState.errors.itemsCount).toContain(
-        texts.fieldMinLength("Items", 2)
+        texts.fieldMinValue("Items", 2)
       );
     });
 
