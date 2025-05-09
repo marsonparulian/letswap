@@ -19,7 +19,7 @@ describe("Test the default of coll form", () => {
   });
 
   afterAll(async () => {
-    browser.close();
+    await browser.close();
   });
 
   it("Form #coll-form exist", async () => {
