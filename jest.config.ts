@@ -19,7 +19,11 @@ const config: Config = {
   // Increase default timeout, in case need to manually wait for some async operations
   testTimeout: 48000,
   // Set tests directory to `./tests`
-  testMatch: ["<rootDir>/tests/**/*.(spec|test).[jt]s?(x)"],
+  testMatch: [
+    "<rootDir>/tests/unit/**/*.(spec|test).[jt]s?(x)",
+    "<rootDir>/tests/integration/**/*.(spec|test).[jt]s?(x)",
+    "<rootDir>/tests/functional/**/*.(spec|test).[jt]s?(x)",
+  ],
   bail: true,
 };
 
