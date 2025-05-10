@@ -1,8 +1,3 @@
-/**
- * @jest-environment node
- */
-// Note: directive above is needed to override the global `jsdom`, since this file tests server functions (DB related)
-
 import puppeteer, { Browser, Page } from "puppeteer";
 import * as utils from "@/tests/e2e/utils";
 
@@ -18,8 +13,7 @@ describe("Invalid collection form", () => {
 
   beforeAll(async () => {
     // Launch browser
-    const userDataDir = "/home/mpa/projects/letswap/tests-e2e/user-data";
-    browser = await puppeteer.launch(utils.BROWSER_OPTIONS);
+    browser = await utils.launchBrowser();
   });
 
   describe("Submit invalid name", () => {
