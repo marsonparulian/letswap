@@ -1,6 +1,22 @@
 import { RawCollFormData } from "@/app/lib/actions/collection-actions";
 import { mockUtils } from "./mock-utils";
 
+// Mock data to create collection
+export const validUnsavedCollectionFormData = (): FormData => {
+  const tag = mockUtils.generateTag("collection");
+  const formData = new FormData();
+  // formData.append("id", "");
+  formData.append("slug", `unsaved-collection-${tag}`);
+  formData.append("name", `unsaved Collection ${tag}`);
+  formData.append("description", "This is a test collection description");
+  formData.append("itemsCount", "3");
+  formData.append("producerId", "2");
+  // formData.append("imageUrl", "");
+  formData.append("year", "2026");
+  return formData;
+};
+
+// Mock of a saved collection
 export const validCollectionFormData = (): FormData => {
   const tag = mockUtils.generateTag("collection");
   const formData = new FormData();
@@ -15,17 +31,7 @@ export const validCollectionFormData = (): FormData => {
   return formData;
 };
 
-export const validRawCollectionData: RawCollFormData = {
-  id: "1",
-  slug: `test-collection-${mockUtils.generateTag("collection")}`,
-  name: `Test Collection ${mockUtils.getLastTag("collection")}`,
-  description: "This is a test collection description",
-  itemsCount: "10",
-  producerId: "1",
-  imageUrl: "https://example.com/image.jpg",
-  year: "2023",
-};
-
+// Mock of an empty collection for data
 export const emptyCollectionFormData = (): FormData => {
   const formData = new FormData();
   formData.append("id", "");
@@ -39,6 +45,7 @@ export const emptyCollectionFormData = (): FormData => {
   return formData;
 };
 
+// Mock of a collection with invalid data
 export const invalidCollectionFormData = (): FormData => {
   const formData = new FormData();
   formData.append("id", "invalid");
