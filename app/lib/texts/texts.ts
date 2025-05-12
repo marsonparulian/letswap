@@ -27,3 +27,13 @@ export function fieldMinValue(field: string, min: number): string {
 export function fieldMaxValue(field: string, max: number): string {
   return `${field} must be at most ${max}`;
 }
+
+// Message when 'something' is saved successfully
+export function savedSuccessfully(what: string): string {
+  return `${what} saved successfully`;
+}
+
+// Message when 'something' is deleted successfully
+export function deletedSuccessfully_notYetUsed(what: string): string {
+  return `${what} deleted successfully`;
+}
