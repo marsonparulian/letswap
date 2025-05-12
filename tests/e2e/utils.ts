@@ -14,6 +14,8 @@ export const launchBrowser = async (): Promise<Browser> => {
 export const BASE_URL = "http://localhost:3000";
 // URL for testing
 export const URL_COLL_CREATE = `${BASE_URL}/collections/create`;
+export const URL_COLL_LIST = `${BASE_URL}/collections`;
+
 // Browser's user data directory
 export const USER_DATA_DIR = "/home/mpa/projects/letswap/tests/e2e/user-data";
 // Browser's options
