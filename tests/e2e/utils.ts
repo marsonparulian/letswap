@@ -44,6 +44,8 @@ export const PAGE_WAIT_FOR_SELECTOR_OPTIONS = {
 // Remove  auto generated nextjs elements used in development environment. The element may abstruct the HTML element that currently being tested.
 export async function removeAllDevelopmentElements(page: Page) {
   // Element `nextjs-portal`, used by nextjs for development panel, may be obstructing elements on the page
+  const nextJsPanel = await page.waitForSelector("nextjs-portal");
+
   // Remove element `nextjs-portal`, so it's blocking the tested page components
   await page.evaluate(() => {
     const nextJsPanel = document.querySelector("nextjs-portal");
