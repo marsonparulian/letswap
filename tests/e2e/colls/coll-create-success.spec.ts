@@ -36,36 +36,58 @@ describe("Create a collection successfully", () => {
         `#coll-form [name='${fieldName}']`,
         fieldValue.toString()
       );
+      // If the filedName == "producerId", select the option
+      if (fieldName === "producerId") {
+        await page.select(
+          `#coll-form [name='${fieldName}']`,
+          fieldValue.toString()
+        );
+      }
     }
   });
 
   it("Submit the form and redirected to the collection list", async () => {
-    await page.click("#coll-form button[type='submit']");
+    // Get the current URL
+    const url = page.url();
 
-    // Wait until current URL is changed
+    // Await for 2 events, submit button click and URL change
     try {
-      await page.waitForFunction(
-        () => {
-          const url = window.location.href;
-          return url !== utils.URL_COLL_CREATE;
-        },
-        { timeout: 8e3 }
-      );
+      await Promise.all([
+        page.waitForFunction(
+          async (url) => {
+            // IMPORTANT this runs on browser context
+            const urlInBrowser = window.location.href;
+
+            return urlInBrowser !== url;
+          },
+          { timeout: 6e3 },
+          url
+        ),
+        page.click("#coll-form button[type='submit']"),
+      ]);
     } catch (e) {
-      console.log("Error waiting for URL of collection form to change:", e);
+      console.error(`URL should have changed. Currently ${url}`);
+      console.error(e);
     }
 
     // Check if the URL is the collection list page
-    const url = page.url();
-    expect(url).toBe(utils.URL_COLL_LIST);
+    const newUrl = await page.url();
+    expect(newUrl).toBe(utils.URL_COLL_LIST);
   });
 
-  it.skip("Check success message in the element with `role=status`", async () => {
+  it("Check success message in the element with `role=status`", async () => {
     const successMessage = await page.$eval(
       "[role=status], [aria-live=assertive]",
       (el) => el.textContent
     );
     expect(successMessage).toBe(texts.savedSuccessfully("Collection"));
+  });
+
+  it("The collection list page should have 'li' element as collection item '", async () => {
+    const listContainer = await page.$$("main #coll-list");
+    expect(listContainer.length).toBeGreaterThan(0);
+    const collectionItems = await page.$$("main #coll-list li");
+    expect(collectionItems.length).toBeGreaterThan(0);
   });
 
   it.skip("Check if saved collection appears at the top of collection list", async () => {

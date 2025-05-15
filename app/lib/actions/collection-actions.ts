@@ -22,6 +22,7 @@ export type CollFormState = {
     [k in keyof RawCollFormData]?: string[] | undefined;
   };
   message: string | null;
+  success?: boolean;
 };
 
 // Parse `FormData` to acquire `RawCollFormData`
@@ -95,12 +96,17 @@ export async function createCollectionAction(
   // Continue with valid data.
   // Saving new collection
   // FIXME: Just temporary for testing
-  const isCreateSuccess = false;
+  const isCreateSuccess = true;
 
   if (isCreateSuccess) {
-    // Revalidate path & redirect
+    // Revalidate path to refresh data
     revalidatePath("/collections/");
-    redirect("/collections");
+    // Set `success` and the client will redirect
+    return {
+      errors: {},
+      message: texts.savedSuccessfully("Collection"),
+      success: true,
+    };
   } else {
     return {
       errors: {},
