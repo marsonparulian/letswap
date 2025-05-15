@@ -21,7 +21,10 @@ const config: Config = {
   },
   // Increase default timeout, in case need to manually wait for some async operations
   testTimeout: 48e3,
-  // reporters: ["default"],
+  reporters: [
+    // "default",
+    ["jest-silent-reporter", { useDots: true }],
+  ], // Comment this to see full output
   testMatch: ["<rootDir>/tests/e2e/**/*.(spec|test).[jt]s?(x)"],
   bail: true,
   // IMPORTANT: do not use `watch` in this config file, put it in the command line. Otherwise it will cause "Error: AggregatedResult must be present after test run is complete"
