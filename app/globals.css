@@ -48,7 +48,7 @@ div.top-bar,
 div.top-bar ul,
 div.top-bar a {
   background: orange;
-  color: black
+  color: black;
 }
 
 div.top-bar li {
@@ -68,7 +68,8 @@ div.top-bar a.active {
 }
 
 /* Style for cards, used in list */
-.cell>.card {
+li.cell.card {
+  list-style: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
 }
@@ -78,7 +79,7 @@ div.help-text {
   margin: -1rem 0 1rem 0;
 }
 
-div.help-text>.alert {
+div.help-text > .alert {
   /* When form input invalid, slide right the error message */
   animation: slide-right 0.5s ease-in-out;
   z-index: 1;
