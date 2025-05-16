@@ -20,7 +20,7 @@ describe("Create collection invalid - DB error", () => {
     browser = await e2eUtils.launchBrowser();
     page = await browser.newPage();
     // Open the form
-    await page.goto(links.COLL_CREATE());
+    await page.goto(e2eUtils.URL_COLL_CREATE);
 
     // Remove nextjs dev panel
     await e2eUtils.removeAllDevelopmentElements(page);
