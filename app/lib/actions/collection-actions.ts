@@ -1,7 +1,7 @@
 // Contain actions for collection
 "use server";
 
-import { retrieve, createCollection } from "@/app/lib/data/collections";
+import { createCollection } from "@/app/lib/data/collections";
 import z from "zod";
 import * as texts from "@/app/lib/texts/texts";
 import { revalidatePath } from "next/cache";
@@ -105,6 +105,8 @@ export async function createCollectionAction(
       imageUrl: validatedData.data.imageUrl || "",
     });
   } catch (e) {
+    console.error("Error: Failed saving collection. Problem with DB data lib");
+    console.error(e);
     return {
       errors: {},
       message: "Failed saving Collection data",
