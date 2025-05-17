@@ -1,9 +1,9 @@
 // This file contains links used in the web
 
-export const COLL_PAGE = (slug: string): string => {
+export const collPage = (slug: string): string => {
   return `/c/${slug}`;
 };
 
-export const COLL_CREATE = (): string => {
+export const collCreate = (): string => {
   return `/collections/create`;
 };
