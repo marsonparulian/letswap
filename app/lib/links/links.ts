@@ -7,3 +7,7 @@ export const collPage = (slug: string): string => {
 export const collCreate = (): string => {
   return `/collections/create`;
 };
+
+export const producerPage = (slug: string): string => {
+  return `/p/${slug}`;
+};

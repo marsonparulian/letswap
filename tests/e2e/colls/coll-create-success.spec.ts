@@ -1,9 +1,11 @@
 // Scenario: Create a collection successfully
 
 import { Browser, Page } from "puppeteer";
-import * as utils from "@/tests/e2e/utils";
+import * as e2eUtils from "@/tests/e2e/utils";
 import * as mockCollections from "@/tests/mocks/mock-collections";
 import * as texts from "@/app/lib/texts/texts";
+import * as links from "@/app/lib/links/links";
+import * as collE2eUtils from "@/tests/e2e/colls/coll-e2e-utils";
 
 describe("Create a collection successfully", () => {
   let browser: Browser;
@@ -12,12 +14,12 @@ describe("Create a collection successfully", () => {
   const mockFormData = mockCollections.validUnsavedCollectionFormData();
 
   beforeAll(async () => {
-    browser = await utils.launchBrowser();
+    browser = await e2eUtils.launchBrowser();
     page = await browser.newPage();
-    await page.goto(utils.URL_COLL_CREATE);
+    await page.goto(e2eUtils.URL_COLL_CREATE);
 
     // Remove the next dev panel
-    await utils.removeAllDevelopmentElements(page);
+    await e2eUtils.removeAllDevelopmentElements(page);
   });
 
   afterAll(async () => {
@@ -30,20 +32,7 @@ describe("Create a collection successfully", () => {
   });
 
   it("Fill the form with valid data", async () => {
-    // Fill the form with valid data. Iterate through all form fields and fill them
-    for (const [fieldName, fieldValue] of mockFormData.entries()) {
-      await page.type(
-        `#coll-form [name='${fieldName}']`,
-        fieldValue.toString()
-      );
-      // If the filedName == "producerId", select the option
-      if (fieldName === "producerId") {
-        await page.select(
-          `#coll-form [name='${fieldName}']`,
-          fieldValue.toString()
-        );
-      }
-    }
+    await collE2eUtils.fillCollectionForm(page, mockFormData);
   });
 
   it("Submit the form and redirected to the collection list", async () => {
@@ -72,10 +61,10 @@ describe("Create a collection successfully", () => {
 
     // Check if the URL is the collection list page
     const newUrl = await page.url();
-    expect(newUrl).toBe(utils.URL_COLL_LIST);
+    expect(newUrl).toBe(e2eUtils.URL_COLL_LIST);
   });
 
-  it("Check success message in the element with `role=status`", async () => {
+  it("Success message should be in the element with `role=status`", async () => {
     const successMessage = await page.$eval(
       "[role=status], [aria-live=assertive]",
       (el) => el.textContent
@@ -90,43 +79,28 @@ describe("Create a collection successfully", () => {
     expect(collectionItems.length).toBeGreaterThan(0);
   });
 
-  it.skip("Check if saved collection appears at the top of collection list", async () => {
-    await page.goto(utils.URL_COLL_LIST);
-    await page.waitForSelector("[data-test='coll-list'] li:first-child");
-
+  it("Saved collection should appears at the top of collection list", async () => {
     // Get the first item in the collection list
-    const firstItem = await page.$("[data-test='coll-list'] li:first-child");
+    const firstItem = await page.$("#coll-list li:first-child");
     if (!firstItem) {
       throw new Error("The first collection item is not found");
     }
 
     // Get the collection name from the first item
+    const nameSelector = "h3";
     const firstCollName = await firstItem.$eval(
-      ".f-name",
+      nameSelector,
       (el) => el.textContent
     );
     expect(firstCollName).toBe(mockFormData.get("name"));
 
-    // Check the link
-    // Check the year
-    const firstCollYear = await firstItem.$eval(
-      ".f-year",
-      (el) => el.textContent
+    // Check that the `name` is a link to the collection detail page
+    const mockSlug: string = mockFormData.get("slug")?.toString() || "";
+    const firstCollNameLink = await firstItem.$eval(`${nameSelector} a`, (el) =>
+      el.getAttribute("href")
     );
-    expect(firstCollYear).toBe(mockFormData.get("year"));
+    expect(firstCollNameLink).toBe(links.collPage(mockSlug));
 
-    // Check the number of items
-    const firstCollItems = await firstItem.$eval(
-      ".f-items",
-      (el) => el.textContent
-    );
-    expect(firstCollItems).toBe(mockFormData.get("itemsCount"));
-
-    // Check the description
-    const firstCollDesc = await firstItem.$eval(
-      ".f-description",
-      (el) => el.textContent
-    );
-    expect(firstCollDesc).toBe(mockFormData.get("description"));
+    // NOTE: no need to verify for the rest of the elements, because it has been checked in other test file (coll-list-card.ts)
   });
 });

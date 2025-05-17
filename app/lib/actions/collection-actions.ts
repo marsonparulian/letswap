@@ -1,6 +1,7 @@
 // Contain actions for collection
 "use server";
 
+import { retrieve, createCollection } from "@/app/lib/data/collections";
 import z from "zod";
 import * as texts from "@/app/lib/texts/texts";
 import { revalidatePath } from "next/cache";
@@ -94,22 +95,29 @@ export async function createCollectionAction(
 
   // Continue with valid data.
   // Saving new collection
-  // FIXME: Just temporary for testing
-  const isCreateSuccess = true;
-
-  if (isCreateSuccess) {
-    // Revalidate path to refresh data
-    revalidatePath("/collections/");
-    // Set `success` and the client will redirect
+  try {
+    createCollection({
+      id: 0,
+      createdAt: new Date(),
+      items: [],
+      ...validatedData.data,
+      // Overwrite the type of `imageUrl`, because currently `imageUrl` is nulable and optional
+      imageUrl: validatedData.data.imageUrl || "",
+    });
+  } catch (e) {
     return {
       errors: {},
-      message: texts.savedSuccessfully("Collection"),
-      success: true,
-    };
-  } else {
-    return {
-      errors: {},
-      message: "Failed saving collection",
+      message: "Failed saving Collection data",
     };
   }
+
+  // All good! response with `success` status
+  // Revalidate path to refresh data
+  revalidatePath("/collections/");
+  // Set `success` and the client will redirect
+  return {
+    errors: {},
+    message: texts.savedSuccessfully("Collection"),
+    success: true,
+  };
 }
