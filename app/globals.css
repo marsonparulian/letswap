@@ -67,12 +67,26 @@ div.top-bar a.active {
   border: none;
 }
 
+/* to display inline */
+.display-inline {
+  display: flex;
+  gap: 1.2rem;
+}
+
 /* Style for cards, used in list */
 li.cell.card {
   list-style: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
 }
+li.cell.card .display-inline {
+  color: chocolate;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* end of cards style */
 
 div.help-text {
   /* To stick with the input above */
