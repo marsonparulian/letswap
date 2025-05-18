@@ -29,10 +29,32 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ToasterWrapper />
-        <header>
+
+        {/* Navigation */}
+        <header className="site-header">
           <SiteNav />
         </header>
-        <main>{children}</main>
+
+        {/* Main Content Area */}
+        <div className="main-content">
+          <main className="grid-container">
+            <div className="grid-x grid-margin-x">
+              <div className="cell">{children}</div>
+            </div>
+          </main>
+        </div>
+
+        {/* Footer */}
+        <footer className="site-footer">
+          <div className="grid-container">
+            <div className="grid-x grid-margin-x">
+              <div className="cell text-center">
+                <p>© {new Date().getFullYear()} LetSwap. Happy collecting!</p>
+              </div>
+            </div>
+          </div>
+        </footer>
+
         {/* Foundation CSS */}
         <link
           rel="stylesheet"
@@ -46,7 +68,7 @@ export default function RootLayout({
           src="https://code.jquery.com/jquery-3.7.0.min.js"
         ></script>
 
-        {/* Foundation JSF */}
+        {/* Foundation JS */}
         <script
           defer
           type="text/javascript"
