@@ -2,9 +2,7 @@ class MockTagGenerator {
   private static lastGeneratedTags: Map<string, string> = new Map();
 
   static generateUniqueTag(namespace: string): string {
-    const timestamp = Date.now();
-    const random = Math.random().toString(36).substring(2, 8);
-    const tag = `${timestamp}-${random}`;
+    const tag = Math.random().toString(36).substring(2, 8);
     this.lastGeneratedTags.set(namespace, tag);
     return tag;
   }
