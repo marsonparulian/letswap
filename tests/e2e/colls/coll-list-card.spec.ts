@@ -131,4 +131,11 @@ describe("Collection card should..", () => {
     );
     expect(description).toBe(newestCol.description);
   });
+  it("Have link to the detail page with class 'button'", async () => {
+    const detailLink = await firstCard!.$eval(
+      "a.button",
+      (el: HTMLAnchorElement) => el.getAttribute("href")
+    );
+    expect(detailLink).toBe(links.collPage(newestCol.slug));
+  });
 });

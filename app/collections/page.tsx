@@ -56,6 +56,12 @@ export default async function CollectionsPage() {
                     </span>
                   </div>
                   <p className="f-description">{coll.description}</p>
+                  <Link
+                    className="button hollow expanded"
+                    href={links.collPage(coll.slug)}
+                  >
+                    Details..
+                  </Link>
                 </div>
               </li>
             );
