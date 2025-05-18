@@ -6,7 +6,7 @@
 import { tableName as producerTableName } from "@/app/lib/data/producers";
 import { tableName as collectionTableName } from "@/app/lib/data/collections";
 import { tableName as collectionItemsTableName } from "@/app/lib/data/collection_items";
-import { sql } from "@/app/lib/data/utils";
+import { sql, closeSqlConnection } from "@/app/lib/data/utils";
 
 async function deleteAllData() {
   // Delete in reverse order of dependencies
@@ -29,7 +29,7 @@ async function seedBasicProducers() {
 export async function GET() {
   try {
     // Run all operations in a transaction
-    await sql.begin(async (sql) => {
+    await sql.begin(async () => {
       await deleteAllData();
       await seedBasicProducers();
     });
@@ -43,5 +43,7 @@ export async function GET() {
       { error: "Failed to reset database" },
       { status: 500 }
     );
+  } finally {
+    await closeSqlConnection();
   }
 }
