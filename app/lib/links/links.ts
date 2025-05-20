@@ -11,3 +11,7 @@ export const collCreate = (): string => {
 export const producerPage = (slug: string): string => {
   return `/p/${slug}`;
 };
+
+export const producerCreate = (): string => {
+  return `/producers/create`;
+};

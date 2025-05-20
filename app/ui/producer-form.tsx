@@ -2,6 +2,8 @@
 "use client";
 import { useActionState } from "react";
 import { producerFormState as ProducerFormState } from "@/app/lib/actions/producer-actions";
+import SlugInput from "@/app/modules/slug-input/slug-input-component";
+import { checkSlugForProducers } from "@/app/modules/slug-input/slug-input-actions";
 
 export default function ProducerForm({
   actionFunc,
@@ -26,44 +28,6 @@ export default function ProducerForm({
             Producer <span className="show-for-sr">Form</span>
           </h1>
         </header>
-
-        {/* slug */}
-        <div className="grid-x grid-padding-x">
-          <div className="medium-6 cell">
-            <label>
-              Slug
-              <input
-                name="slug"
-                defaultValue={producer?.slug}
-                type="text"
-                placeholder="Slug will be used in URL only"
-                aria-describedby="slug-help-text"
-              />
-            </label>
-            <div
-              className="help-text"
-              id="slug-help-text"
-              aria-live="polite"
-              aria-atomic="true"
-            >
-              {/* Show message if no form error */}
-              {!formState.errors?.slug && (
-                <p className="label secondary">
-                  Only accepts alphanumeric, _ (underscore), and .(period)
-                </p>
-              )}
-              {/* Show error messages */}
-              {formState.errors?.slug &&
-                formState.errors.slug.map((e, k) => {
-                  return (
-                    <span key={`slug-error-${k}`} className="label alert">
-                      {e}
-                    </span>
-                  );
-                })}
-            </div>
-          </div>
-        </div>
 
         {/* name */}
         <div className="grid-x grid-padding-x">
@@ -100,6 +64,22 @@ export default function ProducerForm({
                   );
                 })}
             </div>
+          </div>
+        </div>
+
+        {/* slug */}
+        <div className="grid-x grid-padding-x">
+          <div className="medium-6 cell">
+            <SlugInput
+              slugCheckFunction={checkSlugForProducers}
+              propsValidationResult={{
+                slug: producer?.slug || "",
+                isValid: formState.errors?.slug ? false : true,
+                // On initial state we do not know if the slug is unique or not
+                isUnique: null,
+                message: formState.errors?.slug?.join(". ") || "",
+              }}
+            />
           </div>
         </div>
 
