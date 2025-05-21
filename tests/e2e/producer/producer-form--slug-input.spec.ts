@@ -3,6 +3,7 @@
 import { Browser, Page } from "puppeteer";
 import * as e2eUtils from "@/tests/e2e/utils";
 import * as slugInputActions from "@/app/modules/slug-input/slug-input-actions";
+import * as slugInputConfig from "@/app/modules/slug-input/slug-input-config";
 import * as links from "@/app/lib/links/links";
 
 describe("Test slug input component in producer from..", () => {
@@ -55,14 +56,51 @@ describe("Test slug input component in producer from..", () => {
       expect(slugValue).toBe("");
     });
 
-    it.todo(
-      "should have `#slug-help-text.help-text` after the [name='slug'] input "
-    );
-    it.todo("The `.help-text` should have the expected text");
+    it("should have `#slug-help-text.help-text` after the [name='slug'] input", async () => {
+      // Get the slug input and help text elements
+      const slugInput = await page.$("input[name='slug']");
+      const helpText = await page.$("#slug-help-text");
+
+      // Ensure both elements exist
+      expect(slugInput).not.toBeNull();
+      expect(helpText).not.toBeNull();
+
+      // Check the variables are not nul to satisfy the typescript
+      if (!slugInput || !helpText) throw new Error("Elements not found");
+
+      // Get their positions in the DOM
+      const slugInputIndex = await page.evaluate((el) => {
+        return Array.from(document.querySelectorAll("*")).indexOf(el);
+      }, slugInput);
+
+      const helpTextIndex = await page.evaluate((el) => {
+        return Array.from(document.querySelectorAll("*")).indexOf(el);
+      }, helpText);
+
+      // Check if help text comes after the slug input
+      expect(helpTextIndex).toBeGreaterThan(slugInputIndex);
+
+      // Verify the help text has the correct class
+      const helpTextClass = await helpText.evaluate((el) => el.className);
+      expect(helpTextClass).toContain("help-text");
+    });
+
+    it("The `#slug-help-text` should have the expected text", async () => {
+      const helpText = await page.$eval(
+        "#slug-help-text",
+        (el) => el.textContent
+      );
+
+      // The help text should show the default info text from slugInputActions
+      expect(helpText).toBe(slugInputConfig.TEXT_INFO);
+    });
+
     it.todo(
       "should have `aria-describedby` attribute with value of `slug-help-text`"
     );
+
     it.todo("Should have role attribute with value 'status");
+
     it.todo("should have `aria-live` attribute with value of `polite`");
   });
   describe("When [name='slug'] is empty..", () => {

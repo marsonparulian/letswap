@@ -3,10 +3,9 @@
 // This file contains the SlugInput component, which is a controlled input field for slugs.
 // It includes validation for the slug format and checks for uniqueness against a database.
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // import { useDebounce } from "use-debounce";
 
-import * as slugInputActions from "@/app/modules/slug-input/slug-input-actions";
 import * as slugInputConfig from "@/app/modules/slug-input/slug-input-config";
 
 export default function SlugInput({
