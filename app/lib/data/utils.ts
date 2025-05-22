@@ -27,8 +27,8 @@ export function tableToObject<T>(p1: CamelToSnake<T>): T {
  * @returns Promise<boolean> - true if the slug is unique, false otherwise
  */
 export async function checkSlugUniqueness(
-  tableName: string,
-  slug: string
+  slug: string,
+  tableName: string
 ): Promise<boolean> {
   try {
     const result = await sql`SELECT COUNT(*) FROM ${sql(
