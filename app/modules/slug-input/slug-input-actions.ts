@@ -30,6 +30,7 @@ export const validateSlug = async (
   let message = TEXT_OK;
   let isValid = true;
   let isUnique = null;
+  let isError = false;
 
   // Check if the slug is empty
   if (slug.length === 0) {
@@ -44,18 +45,25 @@ export const validateSlug = async (
   }
 
   // If valid, check the uniqueness
-  if (isValid) {
-    isUnique = await checkSlugUniqueness(slug, tableName);
-    if (!isUnique) {
-      isValid = false;
-      message = TEXT_UNAVAILABLE;
+  try {
+    if (isValid) {
+      isUnique = await checkSlugUniqueness(slug, tableName);
+      if (!isUnique) {
+        isValid = false;
+        message = TEXT_UNAVAILABLE;
+      }
     }
+  } catch (e) {
+    console.error("Error checking slug uniqueness:", e);
+    isError = true;
+    message = "Error checking slug uniqueness";
   }
 
   return {
     slug,
     isValid,
     isUnique,
+    isError,
     message,
   };
 };
@@ -68,5 +76,6 @@ export const validateSlug = async (
 export const checkSlugForProducers = async (
   slug: string
 ): Promise<SlugValidationResult> => {
+  console.log("Checking slug for producers:", slug);
   return await validateSlug(slug, producerTableName);
 };

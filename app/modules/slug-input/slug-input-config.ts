@@ -20,5 +20,7 @@ export type SlugValidationResult = {
   // `isValid` indicates if the slug is valid in terms of format and uniqueness.
   isValid: boolean;
   isUnique?: boolean | null;
+  // `iError` indicates if there was an technical error during validation.
+  isError?: boolean;
   message: string | null;
 };
