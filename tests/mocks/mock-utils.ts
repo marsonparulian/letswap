@@ -18,3 +18,5 @@ export const mockUtils = {
   getLastTag: (namespace: string) =>
     MockTagGenerator.getLastGeneratedTag(namespace),
 };
+
+export default mockUtils;
