@@ -76,6 +76,5 @@ export const validateSlug = async (
 export const checkSlugForProducers = async (
   slug: string
 ): Promise<SlugValidationResult> => {
-  console.log("Checking slug for producers:", slug);
   return await validateSlug(slug, producerTableName);
 };
