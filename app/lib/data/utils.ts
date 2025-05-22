@@ -22,8 +22,8 @@ export function tableToObject<T>(p1: CamelToSnake<T>): T {
 
 /**
  * Check if a slug is unique in a given table
- * @param tableName - The name of the table to check
  * @param slug - The slug to check for uniqueness
+ * @param tableName - The name of the table to check
  * @returns Promise<boolean> - true if the slug is unique, false otherwise
  */
 export async function checkSlugUniqueness(
