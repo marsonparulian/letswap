@@ -93,3 +93,15 @@ WHERE id = ${id}
     throw new Error(`Error deleting producer id: ${id}`);
   }
 }
+export async function deleteProducerBySlug(slug: string) {
+  try {
+    return sql`
+      DELETE FROM ${sql(tableName)}
+      WHERE slug = ${slug}
+    `;
+  } catch (error) {
+    console.error(`Error delete producer slug ${slug}`);
+    console.error(error);
+    throw new Error(`Error deleting producer slug: ${slug}`);
+  }
+}
