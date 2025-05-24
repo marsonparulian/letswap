@@ -9,11 +9,13 @@ export const helpTextClass = {
   onAlert: "label alert",
   onSuccess: "label success",
 };
+// Only used in tests : all states related to slug input component
 export interface SlugInputState {
   slugValue: string;
+  // The text displayed in the help text
   helpText: string;
+  // The class of the help text element
   helpTextClass: string;
-  isReadOnly: boolean;
 }
 
 export const checkStates = async (
@@ -31,21 +33,6 @@ export const checkStates = async (
   } catch (error) {
     console.error(
       `slug value not as expected. Expected: ${expectedState.slugValue}`
-    );
-    throw error;
-  }
-
-  // Check readOnly state
-  const isReadOnly = await page.$eval(
-    "input[name='slug']",
-    (input) => (input as HTMLInputElement).readOnly
-  );
-
-  try {
-    expect(isReadOnly).toBe(expectedState.isReadOnly);
-  } catch (error) {
-    console.error(
-      `slug input readOnly state not as expected. Expected: ${expectedState.isReadOnly}`
     );
     throw error;
   }

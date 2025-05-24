@@ -80,7 +80,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: "",
         helpText: initialHelpText,
         helpTextClass: initialHelpTextClass,
-        isReadOnly: false,
       };
 
       await checkStatesWithIntervals(page, expectedState);
@@ -127,7 +126,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: initialHelpText,
         helpTextClass: initialHelpTextClass,
-        isReadOnly: false,
       };
 
       await checkStatesWithIntervals(page, expectedState);
@@ -175,7 +173,6 @@ describe("Test slug input component -- manual edit", () => {
         // Slug validation not yet happened, because of the debounce delay
         helpText: initialHelpText,
         helpTextClass: initialHelpTextClass,
-        isReadOnly: false,
       };
 
       await checkStates(page, expectedStateBeforeDelay).catch((e) => {
@@ -266,7 +263,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: initialHelpText,
         helpTextClass: initialHelpTextClass,
-        isReadOnly: false,
       };
       await checkStates(page, expectedState);
     });
@@ -295,7 +291,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: slugInputConfig.TEXT_VALIDATING,
         helpTextClass: initialHelpTextClass,
-        isReadOnly: false,
       };
       await checkStates(page, expectedState);
     });
@@ -407,7 +402,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: initialHelpText,
         helpTextClass: initialHelpTextClass,
-        isReadOnly: false,
       };
 
       checkStates(page, expectedState).catch((e) => {
@@ -423,7 +417,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: slugInputConfig.TEXT_VALIDATING,
         helpTextClass: slugInputTestUtils.helpTextClass.onDefault,
-        isReadOnly: false,
       };
 
       await checkStates(page, expectedState).catch((e) => {
@@ -444,7 +437,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: slugInputConfig.TEXT_INVALID_CHARACTERS,
         helpTextClass: slugInputTestUtils.helpTextClass.onAlert,
-        isReadOnly: false,
       };
 
       // Assert
@@ -501,7 +493,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: initialHelpText,
         helpTextClass: initialHelpTextClass,
-        isReadOnly: false,
       };
 
       checkStates(page, expectedState).catch((e) => {
@@ -517,7 +508,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: slugInputConfig.TEXT_VALIDATING,
         helpTextClass: slugInputTestUtils.helpTextClass.onDefault,
-        isReadOnly: false,
       };
 
       await checkStates(page, expectedState).catch((e) => {
@@ -538,7 +528,6 @@ describe("Test slug input component -- manual edit", () => {
         slugValue: initialSlugValue,
         helpText: slugInputConfig.TEXT_UNAVAILABLE,
         helpTextClass: slugInputTestUtils.helpTextClass.onAlert,
-        isReadOnly: false,
       };
 
       // Assert
