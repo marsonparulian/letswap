@@ -13,7 +13,7 @@ import {
   TEXT_OK,
   TEXT_INVALID,
   TEXT_INVALID_LENGTH,
-  TEXST_INVALID_CHARACTERS,
+  TEXT_INVALID_CHARACTERS,
   TEXT_UNAVAILABLE,
   type SlugValidationResult,
 } from "@/app/modules/slug-input/slug-input-config";
@@ -41,7 +41,7 @@ export const validateSlug = async (
     message = TEXT_INVALID_LENGTH;
   } else if (!SLUG_REGEX.test(slug)) {
     isValid = false;
-    message = TEXST_INVALID_CHARACTERS;
+    message = TEXT_INVALID_CHARACTERS;
   }
 
   // If valid, check the uniqueness

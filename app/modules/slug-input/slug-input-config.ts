@@ -10,7 +10,7 @@ export const TEXT_INFO =
 export const TEXT_VALIDATING = "Validating slug...";
 export const TEXT_INVALID = "Invalid slug";
 export const TEXT_INVALID_LENGTH = `Slug must be between ${SLUG_MIN_LENGTH} and ${SLUG_MAX_LENGTH} characters (inclusive)`;
-export const TEXST_INVALID_CHARACTERS =
+export const TEXT_INVALID_CHARACTERS =
   "Slug can only contain alphanumeric characters, _ (underscore), - (hyphen), and .(period)";
 export const TEXT_UNAVAILABLE = "Slug is unavailable";
 export const TEXT_OK = "Valid! Slug is available";

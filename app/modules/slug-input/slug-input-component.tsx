@@ -5,9 +5,9 @@
 
 import { useState, useEffect } from "react";
 import slugify from "slugify";
-// import { useDebounce } from "use-debounce";
-
+import { useDebounce } from "use-debounce";
 import * as slugInputConfig from "@/app/modules/slug-input/slug-input-config";
+import clsx from "clsx";
 
 export default function SlugInput({
   slugCheckFunction,
@@ -18,12 +18,45 @@ export default function SlugInput({
   ) => Promise<slugInputConfig.SlugValidationResult>;
   propsValidationResult: slugInputConfig.SlugValidationResult;
 }) {
-  // State to manage the slug input value and readonly state
-  let [valResult, setValResult] =
+  // State to manage the slug input value, validation result, and readonly state
+  const [valResult, setValResult] =
     useState<slugInputConfig.SlugValidationResult>(propsValidationResult);
-  let [isReadOnly, setIsReadOnly] = useState(false);
+  const [isReadOnly, setIsReadOnly] = useState(false);
+  const [currentSlug, setCurrentSlug] = useState(
+    propsValidationResult.slug || ""
+  );
+  const [debouncedSlug] = useDebounce(
+    currentSlug,
+    slugInputConfig.DEBOUNCE_DELAY
+  );
 
-  // Handle name input changes
+  // Handle debounced slug validation
+  useEffect(() => {
+    const validateSlug = async () => {
+      if (!debouncedSlug) return;
+
+      // Make the slug input readonly while validating
+      // setIsReadOnly(true);
+
+      // Set validating state
+      setValResult((prev) => ({
+        ...prev,
+        message: slugInputConfig.TEXT_VALIDATING,
+        slug: debouncedSlug,
+      }));
+
+      // Validate the slug
+      const result = await slugCheckFunction(debouncedSlug);
+      setValResult(result);
+
+      // Make the slug input editable again
+      setIsReadOnly(false);
+    };
+
+    validateSlug();
+  }, [debouncedSlug, slugCheckFunction]);
+
+  // Handle name input changes for auto-generating slug
   useEffect(() => {
     const handleNameChange = async () => {
       const nameInput = document.querySelector(
@@ -36,28 +69,17 @@ export default function SlugInput({
         const nameValue = nameInput.value;
         if (!nameValue) return;
 
+        // Don't update if current slug is not empty
+        if (currentSlug !== "") return;
+
         // Generate slug from name
         const suggestedSlug = slugify(nameValue, {
           lower: true,
           strict: true,
         });
 
-        // Make the slug input readonly while validating
-        setIsReadOnly(true);
-
-        // Set validating state
-        setValResult((prev) => ({
-          ...prev,
-          message: "Validating slug...",
-          slug: suggestedSlug,
-        }));
-
-        // Validate the suggested slug
-        const result = await slugCheckFunction(suggestedSlug);
-        setValResult(result);
-
-        // Make the slug input editable again
-        setIsReadOnly(false);
+        // Update the slug value which will trigger the debounced validation
+        setCurrentSlug(suggestedSlug);
       };
 
       nameInput.addEventListener("change", onChange);
@@ -65,7 +87,7 @@ export default function SlugInput({
     };
 
     handleNameChange();
-  }, [slugCheckFunction]);
+  }, [currentSlug]);
 
   return (
     <>
@@ -73,11 +95,12 @@ export default function SlugInput({
         Slug
         <input
           name="slug"
-          defaultValue={valResult.slug}
+          value={currentSlug}
           type="text"
           placeholder="Slug will be used in URL only"
           aria-describedby="slug-help-text"
           readOnly={isReadOnly}
+          onChange={(e) => setCurrentSlug(e.target.value)}
         />
       </label>
       <div
@@ -87,13 +110,12 @@ export default function SlugInput({
         aria-atomic="true"
         role="status"
       >
-        {/* Show message */}
         <p
-          className={`label ${
-            !valResult.isValid || valResult.isUnique === false
-              ? "alert"
-              : "secondary"
-          }`}
+          className={clsx("label", {
+            success: valResult.isValid && valResult.isUnique,
+            alert: !valResult.isValid || valResult.isUnique === false,
+            secondary: valResult.isValid && valResult.isUnique === null,
+          })}
         >
           {valResult.message || slugInputConfig.TEXT_INFO}
         </p>
