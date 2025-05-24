@@ -18,10 +18,9 @@ export default function SlugInput({
   ) => Promise<slugInputConfig.SlugValidationResult>;
   propsValidationResult: slugInputConfig.SlugValidationResult;
 }) {
-  // State to manage the slug input value, validation result, and readonly state
+  // State to manage the slug input value, validation result state
   const [valResult, setValResult] =
     useState<slugInputConfig.SlugValidationResult>(propsValidationResult);
-  const [isReadOnly, setIsReadOnly] = useState(false);
   const [currentSlug, setCurrentSlug] = useState(
     propsValidationResult.slug || ""
   );
@@ -35,9 +34,6 @@ export default function SlugInput({
     const validateSlug = async () => {
       if (!debouncedSlug) return;
 
-      // Make the slug input readonly while validating
-      // setIsReadOnly(true);
-
       // Set validating state
       setValResult((prev) => ({
         ...prev,
@@ -49,20 +45,13 @@ export default function SlugInput({
       // Validate the slug
       const result = await slugCheckFunction(debouncedSlug);
       setValResult(result);
-
-      // Make the slug input editable again
-      // setIsReadOnly(false);
     };
 
     validateSlug();
   }, [debouncedSlug, slugCheckFunction]);
 
-  const currentSecond = new Date().getSeconds();
-  // alert(`currentSlug: ${currentSlug}`);
-
   // Handle name input changes for auto-generating slug
   useEffect(() => {
-    // alert(`currentSecond: ${currentSecond}`);
     const handleNameChange = async () => {
       const nameInput = document.querySelector(
         'input[name="name"]'
@@ -76,8 +65,6 @@ export default function SlugInput({
 
       // Listen for changes in the name input
       const onChange = async () => {
-        // alert(`currentSecond2: ${currentSecond}`);
-
         const nameValue = nameInput.value;
         if (!nameValue) return;
 
@@ -114,7 +101,6 @@ export default function SlugInput({
           type="text"
           placeholder="Slug will be used in URL only"
           aria-describedby="slug-help-text"
-          readOnly={isReadOnly}
           onChange={(e) => setCurrentSlug(e.target.value)}
         />
       </label>
