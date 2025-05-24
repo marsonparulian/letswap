@@ -31,6 +31,8 @@ export const validateSlug = async (
   let isValid = true;
   let isUnique = null;
   let isError = false;
+  // After finish, no longer validating
+  let isValidating = false;
 
   // Check if the slug is empty
   if (slug.length === 0) {
@@ -65,6 +67,7 @@ export const validateSlug = async (
     isUnique,
     isError,
     message,
+    isValidating,
   };
 };
 

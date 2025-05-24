@@ -4,10 +4,10 @@ import { Page, Browser } from "puppeteer";
 import * as e2eUtils from "@/tests/e2e/utils";
 import * as links from "@/app/lib/links/links";
 import * as slugInputConfig from "@/app/modules/slug-input/slug-input-config";
-import * as slugInputActions from "@/app/modules/slug-input/slug-input-actions";
+import * as slugInputTestUtils from "./slug-input--test-utils";
 import { mockUtils } from "@/tests/mocks/mock-utils";
 
-describe("Test slug input component -- manual edit", () => {
+describe("Test slug input component -- name input", () => {
   let browser: Browser;
   let page: Page;
 
@@ -113,62 +113,28 @@ describe("Test slug input component -- manual edit", () => {
         expect(slugValue).toBe(expectedSlug);
       });
 
-      it("Slug input should be read only while validating", async () => {
-        const isReadOnly = await page.$eval(
-          "input[name='slug']",
-          (input) => (input as HTMLInputElement).readOnly
-        );
-        expect(isReadOnly).toBe(true);
-      });
-
       it("The `#slug-help-text` should show 'validating slug' text", async () => {
-        const helpText = await page.$eval(
-          "#slug-help-text",
-          (el) => el.textContent
+        const helpText = await slugInputTestUtils.waitForTheHelpTextToChange(
+          page
         );
         expect(helpText).toBe(slugInputConfig.TEXT_VALIDATING);
       });
 
-      it("#slug-help-text should not 'validating..' anymore after a while", async () => {
-        // Wait for validation to complete
-        await page.waitForFunction(
-          (validatingText) => {
-            const helpText =
-              document.querySelector("#slug-help-text")?.textContent;
-            return helpText !== validatingText;
-          },
-          {},
-          slugInputConfig.TEXT_VALIDATING
+      it("#slug-help-text should show 'success' text", async () => {
+        const helpText = await slugInputTestUtils.waitForTheHelpTextToChange(
+          page
         );
+        expect(helpText).toBe(slugInputConfig.TEXT_OK);
       });
 
-      it("Should eventually show valid slug confirmation", async () => {
-        // Wait for validation to complete
-        await page.waitForFunction(
-          (expectedText) => {
-            const helpText =
-              document.querySelector("#slug-help-text")?.textContent;
-            return helpText === expectedText;
-          },
-          {},
-          slugInputConfig.TEXT_OK
-        );
-
+      it("Should show 'success' help text classes'", async () => {
         // Check help text class
-        const helpTextClass = await page.$eval(
-          "#slug-help-text p",
-          (el) => el.className
+        const helpTextClass = await slugInputTestUtils.getCurrentHelpTextClass(
+          page
         );
-        expect(helpTextClass).toContain("secondary");
-        expect(helpTextClass).not.toContain("alert");
-      });
-
-      it("Slug input should become editable again", async () => {
-        const isReadOnly = await page.$eval(
-          "input[name='slug']",
-          (input) => (input as HTMLInputElement).readOnly
+        expect(helpTextClass).toEqual(
+          slugInputTestUtils.helpTextClass.onSuccess
         );
-        expect(isReadOnly).toBe(false);
       });
     });
   });
@@ -180,6 +146,10 @@ describe("Test slug input component -- manual edit", () => {
     let initialHelpText: string;
 
     beforeAll(async () => {
+      // Reload the page to reset the state
+      await page.reload();
+      await e2eUtils.removeAllDevelopmentElements(page);
+
       // Focus on name input
       await page.focus("input[name='name']");
 

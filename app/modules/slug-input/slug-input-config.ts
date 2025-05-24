@@ -17,8 +17,12 @@ export const TEXT_OK = "Valid! Slug is available";
 
 export type SlugValidationResult = {
   slug: string;
+  // True if the slug is currently being validated.
+  isValidating?: boolean;
   // `isValid` indicates if the slug is valid in terms of format and uniqueness.
-  isValid: boolean;
+  // If it is `null`, it means the slug is empty or has not been validated yet.
+  isValid: boolean | null;
+  // If it is `null`, it means has not tested the uniqueness yet.
   isUnique?: boolean | null;
   // `iError` indicates if there was an technical error during validation.
   isError?: boolean;

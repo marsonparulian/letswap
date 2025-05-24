@@ -74,10 +74,12 @@ export default function ProducerForm({
               slugCheckFunction={checkSlugForProducers}
               propsValidationResult={{
                 slug: producer?.slug || "",
-                isValid: formState.errors?.slug ? false : true,
+                // If there are no errors, set to 'null' to indicate 'neutral' state. 'success' state will be determined by the slug check function.
+                isValid: formState.errors?.slug ? false : null,
                 // On initial state we do not know if the slug is unique or not
                 isUnique: null,
                 message: formState.errors?.slug?.join(". ") || "",
+                isValidating: false,
               }}
             />
           </div>

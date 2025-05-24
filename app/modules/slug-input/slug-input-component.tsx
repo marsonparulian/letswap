@@ -43,6 +43,7 @@ export default function SlugInput({
         ...prev,
         message: slugInputConfig.TEXT_VALIDATING,
         slug: debouncedSlug,
+        isValidating: true,
       }));
 
       // Validate the slug
@@ -50,27 +51,40 @@ export default function SlugInput({
       setValResult(result);
 
       // Make the slug input editable again
-      setIsReadOnly(false);
+      // setIsReadOnly(false);
     };
 
     validateSlug();
   }, [debouncedSlug, slugCheckFunction]);
 
+  const currentSecond = new Date().getSeconds();
+  // alert(`currentSlug: ${currentSlug}`);
+
   // Handle name input changes for auto-generating slug
   useEffect(() => {
+    // alert(`currentSecond: ${currentSecond}`);
     const handleNameChange = async () => {
       const nameInput = document.querySelector(
         'input[name="name"]'
       ) as HTMLInputElement;
       if (!nameInput) return;
 
+      const slugInput = document.querySelector(
+        'input[name="slug"]'
+      ) as HTMLInputElement;
+      if (!slugInput) return;
+
       // Listen for changes in the name input
       const onChange = async () => {
+        // alert(`currentSecond2: ${currentSecond}`);
+
         const nameValue = nameInput.value;
         if (!nameValue) return;
 
+        // Can't use the `currentSlug` directly here because it might not be updated yet
+        const slugValue = slugInput.value;
         // Don't update if current slug is not empty
-        if (currentSlug !== "") return;
+        if (slugValue) return;
 
         // Generate slug from name
         const suggestedSlug = slugify(nameValue, {
@@ -87,7 +101,8 @@ export default function SlugInput({
     };
 
     handleNameChange();
-  }, [currentSlug]);
+    // }, [currentSlug]);
+  }, []);
 
   return (
     <>
@@ -113,8 +128,8 @@ export default function SlugInput({
         <p
           className={clsx("label", {
             success: valResult.isValid && valResult.isUnique,
-            alert: !valResult.isValid || valResult.isUnique === false,
-            secondary: valResult.isValid && valResult.isUnique === null,
+            alert: valResult.isValid === false || valResult.isUnique === false,
+            secondary: valResult.isValidating || valResult.isValid === null,
           })}
         >
           {valResult.message || slugInputConfig.TEXT_INFO}

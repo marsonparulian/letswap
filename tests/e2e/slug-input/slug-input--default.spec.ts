@@ -4,7 +4,7 @@ import { Page, Browser } from "puppeteer";
 import * as e2eUtils from "@/tests/e2e/utils";
 import * as links from "@/app/lib/links/links";
 import * as slugInputConfig from "@/app/modules/slug-input/slug-input-config";
-import * as slugInputActions from "@/app/modules/slug-input/slug-input-actions";
+import * as slugInputTestUtils from "./slug-input--test-utils";
 
 describe("Test slug input component -- default", () => {
   let browser: Browser;
@@ -55,7 +55,13 @@ describe("Test slug input component -- default", () => {
       );
       expect(slugValue).toBe("");
     });
-
+    it("Help text should have 'label secondary' class", async () => {
+      // Remember, the slug input is empty by default
+      const helpTextClass = await slugInputTestUtils.getCurrentHelpTextClass(
+        page
+      );
+      expect(helpTextClass).toBe(slugInputTestUtils.helpTextClass.onDefault);
+    });
     it("should have `#slug-help-text.help-text` after the [name='slug'] input", async () => {
       // Get the slug input and help text elements
       const slugInput = await page.$("input[name='slug']");
