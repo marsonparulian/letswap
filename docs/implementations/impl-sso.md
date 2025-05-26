@@ -1,22 +1,26 @@
 # SSO Implementation Steps
 
-## 1. Initial Setup
+## 1. Initial Setup ✅
 
-1.1. Install required dependencies
+1.1. Install required dependencies ✅
 
 ```bash
-npm install next-auth@latest @auth/core @auth/nextjs-adapter
+pnpm add next-auth
 ```
 
-1.2. Configure environment variables in `.env.local`
+1.2. Configure environment variables in `.env.local` ✅
 
 ```env
+# SSO Provider Credentials
 GOOGLE_ID=
 GOOGLE_SECRET=
+
 FACEBOOK_ID=
 FACEBOOK_SECRET=
+
+# NextAuth Configuration
 NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_SECRET=  # Generate with: openssl rand -base64 32
 ```
 
 ## 2. NextAuth Configuration
@@ -28,7 +32,7 @@ NEXTAUTH_SECRET=your-secret-key
 - Define session callbacks
 - Configure error handling
 
-2.2. Implement session management
+  2.2. Implement session management
 
 - Set JWT token structure
 - Configure session timeouts (24 hours)
@@ -44,7 +48,7 @@ NEXTAUTH_SECRET=your-secret-key
 - Generate credentials (Client ID and Secret)
 - Set authorized redirect URIs
 
-3.2. Facebook Login setup
+  3.2. Facebook Login setup
 
 - Create app in Facebook Developers Console
 - Configure OAuth settings
@@ -59,14 +63,14 @@ NEXTAUTH_SECRET=your-secret-key
 - Error message display component
 - Loading states and animations
 
-4.2. Implement authentication flow
+  4.2. Implement authentication flow
 
 - Provider selection handling
 - OAuth redirect management
 - Token validation and session creation
 - Profile completion check
 
-4.3. Add profile redirect logic
+  4.3. Add profile redirect logic
 
 - Check profile completion status
 - Store pre-login URL
@@ -80,7 +84,7 @@ NEXTAUTH_SECRET=your-secret-key
 - Set up protected routes
 - Implement session validation
 
-5.2. Implement session features
+  5.2. Implement session features
 
 - User session persistence
 - Automatic session refresh
@@ -113,7 +117,7 @@ type AuthError = {
 - Enable NextAuth CSRF tokens
 - Configure Double Submit Cookie pattern
 
-7.2. Configure secure cookies
+  7.2. Configure secure cookies
 
 ```typescript
 {
@@ -138,13 +142,13 @@ type AuthError = {
 - Session management tests
 - Error handling tests
 
-8.2. Integration tests
+  8.2. Integration tests
 
 - Authentication flow tests
 - Session persistence tests
 - Security measure tests
 
-8.3. E2E tests
+  8.3. E2E tests
 
 - Complete login flows
 - Profile completion redirects
@@ -158,7 +162,7 @@ type AuthError = {
 - Session management APIs
 - Error codes and messages
 
-9.2. Developer documentation
+  9.2. Developer documentation
 
 - Setup instructions
 - Environment configuration
