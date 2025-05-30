@@ -1,11 +1,14 @@
 "use client";
 
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders, signIn, ClientSafeProvider } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function SignIn() {
-  const [providers, setProviders] = useState<any>(null);
+  const [providers, setProviders] = useState<Record<
+    string,
+    ClientSafeProvider
+  > | null>(null);
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -20,7 +23,7 @@ export default function SignIn() {
       <h1 className="auth-title">Sign In</h1>
       <nav className="auth-nav">
         {providers &&
-          Object.values(providers).map((provider: any) => (
+          Object.values(providers).map((provider: ClientSafeProvider) => (
             <button
               key={provider.id}
               onClick={() => signIn(provider.id)}
