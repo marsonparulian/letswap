@@ -11,6 +11,99 @@
   --shadow: rgba(0, 0, 0, 0.1);
 }
 
+/* =================================
+   Authentication Pages
+   ================================= */
+/* Sign In Page Container */
+.auth-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: var(--background);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+/* Page Title */
+.auth-title {
+  margin-bottom: 24px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* Provider Buttons Container */
+.auth-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* OAuth Provider Buttons */
+.auth-provider-button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--gray);
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.auth-provider-button:hover {
+  border-color: var(--primary);
+  background: var(--gray-light);
+  transform: translateY(-1px);
+}
+
+.auth-provider-button:active {
+  transform: translateY(0);
+}
+
+/* Auth Error Page */
+.auth-error {
+  text-align: center;
+}
+
+.auth-error-title {
+  color: var(--accent);
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.auth-error-message {
+  margin-bottom: 24px;
+  color: var(--foreground);
+  line-height: 1.5;
+}
+
+.auth-error-button {
+  padding: 12px 24px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.auth-error-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.auth-error-button:active {
+  transform: translateY(0);
+}
+
 /* Base Styles */
 html,
 body {

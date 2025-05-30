@@ -10,6 +10,7 @@
    - React Server Components
    - Foundation CSS Framework with custom styling
    - TypeScript for type safety
+   - Do not use Tailwind
 
 2. Backend
 
