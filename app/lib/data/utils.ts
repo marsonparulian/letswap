@@ -1,7 +1,9 @@
 //Contains utilities related to DB operations
 import postgres from "postgres";
+import { validateRequiredEnvVar } from "@/app/lib/utils/env-utils";
 
-export const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+const POSTGRES_URL = validateRequiredEnvVar("POSTGRES_URL");
+export const sql = postgres(POSTGRES_URL, { ssl: "require" });
 
 export const closeSqlConnection = async () => {
   await sql.end({ timeout: 5 });
