@@ -6,6 +6,7 @@
 
 import { checkSlugUniqueness } from "@/app/lib/data/utils";
 import { tableName as producerTableName } from "@/app/lib/data/producers";
+import { tableName as userTableName } from "@/app/lib/data/users";
 import {
   SLUG_REGEX,
   SLUG_MIN_LENGTH,
@@ -80,4 +81,15 @@ export const checkSlugForProducers = async (
   slug: string
 ): Promise<SlugValidationResult> => {
   return await validateSlug(slug, producerTableName);
+};
+
+/**
+ * Check if the slug is unique for user profiles by making a request to the server.
+ * @param slug - The slug to check for uniqueness.
+ * @returns A promise that resolves to a SlugValidationResult indicating whether the slug is valid and unique.
+ */
+export const checkSlugForUserProfile = async (
+  slug: string
+): Promise<SlugValidationResult> => {
+  return await validateSlug(slug, userTableName);
 };
