@@ -1,49 +1,45 @@
-"use client";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/app/lib/auth";
+import SignInForm from "./signin-form";
+import type { ClientSafeProvider } from "next-auth/react";
 
-import { getProviders, signIn, ClientSafeProvider } from "next-auth/react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+export default async function SignInPage() {
+  const session = await getServerSession(authOptions);
 
-export default function SignIn() {
-  const [providers, setProviders] = useState<Record<
-    string,
-    ClientSafeProvider
-  > | null>(null);
+  // Redirect to home if already signed in
+  if (session) {
+    redirect("/");
+  }
 
-  useEffect(() => {
-    const fetchProviders = async () => {
-      const providers = await getProviders();
-      setProviders(providers);
+  // Create providers object based on configured providers
+  const providers: Record<string, ClientSafeProvider> = {};
+
+  // Add Google provider if configured
+  if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
+    providers.google = {
+      id: "google",
+      name: "Google",
+      type: "oauth",
+      signinUrl: "/api/auth/signin/google",
+      callbackUrl: "/api/auth/callback/google",
     };
-    fetchProviders();
-  }, []);
+  }
 
-  return (
-    <div className="auth-container">
-      <h1 className="auth-title">Sign In</h1>
-      <nav className="auth-nav">
-        {providers &&
-          Object.values(providers).map((provider: ClientSafeProvider) => (
-            <button
-              key={provider.id}
-              onClick={() => signIn(provider.id)}
-              className="auth-provider-button"
-            >
-              {provider.name === "Google" && (
-                <Image src="/google.svg" alt="Google" width={20} height={20} />
-              )}
-              {provider.name === "Facebook" && (
-                <Image
-                  src="/facebook.svg"
-                  alt="Facebook"
-                  width={20}
-                  height={20}
-                />
-              )}
-              <span>Sign in with {provider.name}</span>
-            </button>
-          ))}
-      </nav>
-    </div>
-  );
+  // Add Facebook provider if configured
+  if (process.env.FACEBOOK_ID && process.env.FACEBOOK_SECRET) {
+    providers.facebook = {
+      id: "facebook",
+      name: "Facebook",
+      type: "oauth",
+      signinUrl: "/api/auth/signin/facebook",
+      callbackUrl: "/api/auth/callback/facebook",
+    };
+  }
+
+  if (Object.keys(providers).length === 0) {
+    return <div>No authentication providers available.</div>;
+  }
+
+  return <SignInForm providers={providers} />;
 }
