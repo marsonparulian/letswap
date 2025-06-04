@@ -1,6 +1,7 @@
 import type { NextAuthOptions, DefaultSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
+import { prisma } from "./prisma";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -9,6 +10,8 @@ declare module "next-auth" {
       email: string;
       name: string;
       isAdmin: boolean;
+      isProfileComplete?: boolean;
+      slug?: string;
     } & DefaultSession["user"];
   }
 }
@@ -19,18 +22,20 @@ declare module "next-auth/jwt" {
     email?: string;
     name?: string;
     isAdmin?: boolean;
+    isProfileComplete?: boolean;
+    slug?: string;
   }
 }
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID ?? '',
-      clientSecret: process.env.GOOGLE_SECRET ?? '',
+      clientId: process.env.GOOGLE_ID ?? "",
+      clientSecret: process.env.GOOGLE_SECRET ?? "",
     }),
     FacebookProvider({
-      clientId: process.env.FACEBOOK_ID ?? '',
-      clientSecret: process.env.FACEBOOK_SECRET ?? '',
+      clientId: process.env.FACEBOOK_ID ?? "",
+      clientSecret: process.env.FACEBOOK_SECRET ?? "",
     }),
   ],
   session: {
@@ -45,6 +50,15 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email ?? "";
         token.name = user.name ?? "";
         token.isAdmin = false; // Default value, update based on your admin logic
+
+        // Check profile completion by querying the database
+        const profile = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { slug: true },
+        });
+
+        token.isProfileComplete = !!profile?.slug;
+        token.slug = profile?.slug || "N/A";
       }
       return token;
     },
@@ -54,6 +68,8 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email as string;
         session.user.name = token.name as string;
         session.user.isAdmin = token.isAdmin as boolean;
+        session.user.isProfileComplete = token.isProfileComplete;
+        session.user.slug = token.slug;
       }
       return session;
     },
