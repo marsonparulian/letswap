@@ -45,7 +45,7 @@ export default function ProfileForm({
 
     try {
       await completeProfile({
-        name: initialData.name,
+        // name: initialData.name,
         slug: slug,
       });
 

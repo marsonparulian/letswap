@@ -85,11 +85,35 @@
   - Profile completion state in JWT ✅
   - Redirect logic for incomplete profiles ✅
 
-### 4.3. Add profile redirect logic
+### 4.3. Add profile redirect logic ✅
 
-- Check profile completion status
-- Store pre-login URL
-- Handle redirect after profile completion
+- Check profile completion status ✅
+
+  ```typescript
+  // In auth.ts JWT callback
+  const profile = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: {
+      isProfileComplete: true,
+      slug: true,
+    },
+  });
+  token.isProfileComplete = profile?.isProfileComplete ?? false;
+  ```
+
+- Store pre-login URL ✅
+
+  ```typescript
+  // In middleware.ts
+  const profileUrl = new URL("/profile/complete", request.url);
+  profileUrl.searchParams.set("callbackUrl", request.url);
+  ```
+
+- Handle redirect after profile completion ✅
+  ```typescript
+  // In profile-form.tsx
+  router.push(callbackUrl || "/");
+  ```
 
 ## 5. Session Management Implementation
 

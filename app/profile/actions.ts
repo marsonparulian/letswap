@@ -6,10 +6,10 @@ import { authOptions } from "@/app/lib/auth";
 import { revalidatePath } from "next/cache";
 
 export async function completeProfile({
-  name,
+  // name,
   slug,
 }: {
-  name: string;
+  // name: string;
   slug: string;
 }) {
   const session = await getServerSession(authOptions);

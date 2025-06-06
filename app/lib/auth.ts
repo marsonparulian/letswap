@@ -12,6 +12,7 @@ declare module "next-auth" {
       isAdmin: boolean;
       isProfileComplete?: boolean;
       slug?: string;
+      provider?: string; // Make provider available in session
     } & DefaultSession["user"];
   }
 }
@@ -24,6 +25,7 @@ declare module "next-auth/jwt" {
     isAdmin?: boolean;
     isProfileComplete?: boolean;
     slug?: string;
+    provider?: string; // Store which provider was used
   }
 }
 
@@ -44,22 +46,102 @@ export const authOptions: NextAuthOptions = {
     updateAge: 60 * 60, // Update session every hour
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
+    async jwt({ token, user, account, trigger }) {
+      console.log(`JWT Callback Triggered by: ${trigger}`);
+
+      if (user && account) {
+        // Scenario 1: First sign in with provider
+        console.log(`Initial sign-in with ${account.provider} provider`);
+
+        // First, try to find existing user account by email
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email || "" },
+          select: {
+            id: true,
+            isProfileComplete: true,
+            slug: true,
+          },
+        });
+
+        if (existingUser) {
+          // User exists, check if this provider account is linked
+          const existingAccount = await prisma.account.findFirst({
+            where: {
+              userId: existingUser.id,
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+            },
+          });
+
+          if (!existingAccount) {
+            // Link this provider to existing user
+            await prisma.account.create({
+              data: {
+                userId: existingUser.id,
+                type: account.type,
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+                access_token: account.access_token,
+                token_type: account.token_type,
+                scope: account.scope,
+              },
+            });
+          }
+
+          token.id = existingUser.id;
+          token.isProfileComplete = existingUser.isProfileComplete;
+          token.slug = existingUser.slug || "";
+        } else {
+          // New user, create account
+          const newUser = await prisma.user.create({
+            data: {
+              email: user.email,
+              name: user.name,
+              // Store provider info in Account model
+              accounts: {
+                create: {
+                  type: account.type,
+                  provider: account.provider,
+                  providerAccountId: account.providerAccountId,
+                  access_token: account.access_token,
+                  token_type: account.token_type,
+                  scope: account.scope,
+                },
+              },
+            },
+            select: {
+              id: true,
+            },
+          });
+          token.id = newUser.id;
+          token.isProfileComplete = false;
+          token.slug = undefined;
+        }
+
         token.email = user.email ?? "";
         token.name = user.name ?? "";
         token.isAdmin = false; // Default value, update based on your admin logic
-
-        // Check profile completion by querying the database
-        const profile = await prisma.user.findUnique({
-          where: { id: user.id },
-          select: { slug: true },
-        });
-
-        token.isProfileComplete = !!profile?.slug;
-        token.slug = profile?.slug || "N/A";
+        token.provider = account.provider; // Store which provider was used
+      } else if (trigger === "update") {
+        // Scenario 2: Token refresh (happens every updateAge interval)
+        console.log("Token refresh");
+        // Optionally refresh user data from database
+        if (token.id) {
+          const profile = await prisma.user.findUnique({
+            where: { id: token.id },
+            select: {
+              isProfileComplete: true,
+              slug: true,
+            },
+          });
+          // Update token with fresh data
+          token.isProfileComplete = profile?.isProfileComplete ?? false;
+          token.slug = profile?.slug ?? undefined;
+        }
       }
+      // Scenario 3: Regular token decode (happens on every authenticated request)
+      // We don't need to do anything here, just return the token
+
       return token;
     },
     async session({ session, token }) {
@@ -70,6 +152,7 @@ export const authOptions: NextAuthOptions = {
         session.user.isAdmin = token.isAdmin as boolean;
         session.user.isProfileComplete = token.isProfileComplete;
         session.user.slug = token.slug;
+        session.user.provider = token.provider;
       }
       return session;
     },

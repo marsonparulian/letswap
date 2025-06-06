@@ -2,22 +2,39 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/lib/auth";
 import ProfileForm from "@/app/profile/complete/profile-form";
-import styles from "@/app/profile/profile-form.module.css";
+import styles from "@/app/profile/complete/profile-form.module.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Complete Profile - LetSwap",
+  description: "Complete your profile to start using LetSwap",
+};
+
+interface PageProps {
+  // params: { slug: string };
+  searchParams: Promise<{
+    // [key: string]: string | undefined;
+    callbackUrl: string;
+  }>;
+}
 
 export default async function ProfileCompletePage({
+  // params,
   searchParams,
-}: {
-  searchParams: { callbackUrl?: string };
-}) {
+}: PageProps) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/auth/signin");
   }
 
+  const sp = await searchParams;
+  const callbackUrl = sp.callbackUrl;
+
   // If profile is already complete, redirect to callback URL or home
   if (session.user.isProfileComplete) {
-    redirect(searchParams.callbackUrl || "/");
+    // const callbackUrl = searchParams.callbackUrl as string | undefined;
+    redirect(callbackUrl || "/");
   }
 
   return (
@@ -29,7 +46,7 @@ export default async function ProfileCompletePage({
           slug: session.user.slug || "",
           email: session.user.email || "",
         }}
-        callbackUrl={searchParams.callbackUrl}
+        callbackUrl={callbackUrl}
       />
     </div>
   );
