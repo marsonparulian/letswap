@@ -1,12 +1,12 @@
 // Purpose : Create users table.
-import { tableName } from '@/app/lib/data/users';
-import { sql } from '@/app/lib/data/utils';
+import { tableName } from "@/app/lib/data/users";
+import { sql } from "@/app/lib/data/utils";
 
 async function createUsers() {
-    // Check if the table already exists
-    await sql`DROP TABLE IF EXISTS ${sql(tableName)};`;
-    // Create the table
-    return sql`
+  // Check if the table already exists
+  await sql`DROP TABLE IF EXISTS ${sql(tableName)};`;
+  // Create the table
+  return sql`
         CREATE TABLE IF NOT EXISTS ${sql(tableName)} (
             id TEXT PRIMARY KEY,
             name TEXT,
@@ -22,13 +22,15 @@ async function createUsers() {
 }
 
 async function createAccounts() {
-    // Check if the table already exists
-    await sql`DROP TABLE IF EXISTS accounts;`;
-    // Create the table
-    return sql`
+  // Check if the table already exists
+  await sql`DROP TABLE IF EXISTS accounts;`;
+  // Create the table
+  return sql`
         CREATE TABLE IF NOT EXISTS accounts (
             id TEXT PRIMARY KEY,
-            user_id TEXT NOT NULL REFERENCES ${sql(tableName)}(id) ON DELETE CASCADE,
+            user_id TEXT NOT NULL REFERENCES ${sql(
+              tableName
+            )}(id) ON DELETE CASCADE,
             type TEXT NOT NULL,
             provider TEXT NOT NULL,
             provider_account_id TEXT NOT NULL,
@@ -45,16 +47,15 @@ async function createAccounts() {
 }
 
 export async function GET() {
-    try {
-        await sql.begin(() => [
-            createUsers(),
-            createAccounts()
-        ]);
+  try {
+    await sql.begin(() => [createUsers(), createAccounts()]);
 
-        return Response.json({ message: `Tables ${tableName} and accounts have been created` });
-    } catch (error) {
-        console.log('error creating tables');
-        console.log(error);
-        return Response.json({ error }, { status: 500 });
-    }
+    return Response.json({
+      message: `Tables ${tableName} and accounts have been created`,
+    });
+  } catch (error) {
+    console.log("error creating tables");
+    console.log(error);
+    return Response.json({ error }, { status: 500 });
+  }
 }
