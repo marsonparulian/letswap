@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SiteNav from "@/app/ui/site-nav";
 import ToasterWrapper from "@/app/ui/ToasterWrapper";
+import SessionProvider from "@/app/providers/session-provider";
+import SessionManager from "@/app/providers/session-manager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,14 +30,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {/* Global SessionManager that handles session refresh for the entire app */}
+        <SessionProvider>
+          <SessionManager />
+        </SessionProvider>
+
         <ToasterWrapper />
 
-        {/* Navigation */}
+        {/* Navigation with SessionProvider for auth UI */}
         <header className="site-header">
-          <SiteNav />
+          <SessionProvider>
+            <SiteNav />
+          </SessionProvider>
         </header>
 
-        {/* Main Content Area */}
+        {/* Main Content Area - remains as server component */}
         <div className="main-content">
           <main className="grid-container">
             <div className="grid-x grid-margin-x">
@@ -49,7 +58,10 @@ export default function RootLayout({
           <div className="grid-container">
             <div className="grid-x grid-margin-x">
               <div className="cell text-center">
-                <p>© {new Date().getFullYear()} LetSwap. Happy collecting!</p>
+                {/* Footer components with session data if needed */}
+                <SessionProvider>
+                  <p>© {new Date().getFullYear()} LetSwap. Happy collecting!</p>
+                </SessionProvider>
               </div>
             </div>
           </div>
