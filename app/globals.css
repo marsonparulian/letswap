@@ -78,6 +78,14 @@
   font-weight: 600;
 }
 
+/* User session greeting */
+.user-greeting {
+  margin-right: 1rem;
+  display: inline-block;
+  padding: 0.5rem 0;
+  font-weight: 500;
+}
+
 .auth-error-message {
   margin-bottom: 24px;
   color: var(--foreground);
