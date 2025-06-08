@@ -1,10 +1,9 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 function AuthErrorContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 
@@ -30,18 +29,21 @@ function AuthErrorContent() {
         Authentication Error
       </h1>
       <p style={{ marginBottom: "24px" }}>{errorMessage}</p>
-      <button
-        onClick={() => router.push("/auth/signin")}
+      <a
+        href="/auth/signin"
         style={{
           padding: "8px 16px",
           background: "#2563eb",
           color: "white",
           border: "none",
           cursor: "pointer",
+          textDecoration: "none",
+          display: "inline-block",
+          borderRadius: "4px",
         }}
       >
         Try Again
-      </button>
+      </a>
     </main>
   );
 }
