@@ -1,20 +1,34 @@
+/**
+ * Authentication Error Page Component
+ *
+ * USE CASES:
+ * - Displaying user-friendly auth error messages
+ * - Handling NextAuth error redirects
+ * - Converting error codes to readable messages
+ * - Providing recovery paths after auth failures
+ * - Supporting provider-specific error contexts
+ */
 "use client";
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { mapNextAuthError } from "@/app/lib/errors/auth-errors";
 
+/**
+ * Component to display authentication errors
+ * Uses our standardized error handling system
+ */
 function AuthErrorContent() {
   const searchParams = useSearchParams();
-  const error = searchParams.get("error");
+  const errorCode = searchParams.get("error");
+  const provider = searchParams.get("provider") || undefined;
 
-  const errors: { [key: string]: string } = {
-    Configuration: "There is a problem with the server configuration.",
-    AccessDenied: "You do not have permission to sign in.",
-    Verification: "The verification link was invalid or has expired.",
-    Default: "An error occurred while trying to sign in.",
-  };
+  // Map the error string to our standardized AuthError type
+  const authError = errorCode
+    ? mapNextAuthError(errorCode, provider)
+    : mapNextAuthError("Default");
 
-  const errorMessage = error ? errors[error] ?? errors.Default : errors.Default;
+  const errorMessage = authError.message;
 
   return (
     <main
