@@ -106,7 +106,7 @@ export function mapNextAuthError(
  * @param error - The original error object
  * @returns AuthError with network error details
  */
-export function handleNetworkError(error: Error): AuthError {
+export function handleNetworkError(): AuthError {
   return createAuthError(
     AUTH_ERROR_CODES.NETWORK_ERROR,
     "A network error occurred during authentication. Please check your connection and try again."
