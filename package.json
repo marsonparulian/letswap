@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "check:requirements": "tsx ./scripts/check-required.ts",
+    "dev": "pnpm check:requirements && next dev --turbopack",
+    "build": "pnpm check:requirements && next build",
     "start": "next start",
     "lint": "next lint",
     "prisma:db:push": "node ./prisma/prisma-db-push.js",
