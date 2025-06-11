@@ -30,13 +30,11 @@ if (!fs.existsSync(specificEnvPath)) {
 }
 
 // Load all environment files
-[".env", ".env.local", ".env.development", ".env.production"].forEach(
-  (file) => {
-    dotenv.config({
-      path: resolve(process.cwd(), file),
-    });
-  }
-);
+envFiles.forEach((file) => {
+  dotenv.config({
+    path: resolve(process.cwd(), file),
+  });
+});
 
 // Need for full qualified domain name. Example :"http://localhost:3000" # Or whatever port your app runs on
 // Check for NEXTAUTH_URL
