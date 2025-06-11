@@ -1,12 +1,18 @@
 /**
  * Authentication Error Page Component
  *
- * USE CASES:
- * - Displaying user-friendly auth error messages
- * - Handling NextAuth error redirects
- * - Converting error codes to readable messages
- * - Providing recovery paths after auth failures
- * - Supporting provider-specific error contexts
+ * MOTIVATION:
+ * - Provide users with clear, friendly error messages during authentication failures
+ * - Maintain consistent error presentation across the application
+ * - Integrate with the standardized auth error system
+ * - Offer users a path to recover from authentication errors
+ * - Support different error scenarios from various providers
+ *
+ * USAGE:
+ * - This page is automatically shown when NextAuth redirects to /auth/error
+ * - Error codes and provider information are extracted from URL parameters
+ * - Error messages are generated from our standardized error mapping system
+ * - Users are given a clear action to retry authentication
  */
 "use client";
 
